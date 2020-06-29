@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>1_mcglm.utf8.md</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="0_intro.html">
+    <span class="fa fa-commenting-o"></span>
+     
+    Introdução
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Metodologia
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1_mcglm.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        McGLM
+      </a>
+    </li>
+    <li>
+      <a href="2_wald_test.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        Teste Wald
+      </a>
+    </li>
+    <li>
+      <a href="3_anova.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        ANOVA
+      </a>
+    </li>
+    <li>
+      <a href="4_mc_manova_wald.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        Wald MANOVA
+      </a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="5_simula.html">
+    <span class="fa fa-code"></span>
+     
+    Estudos de simulação
+  </a>
+</li>
+<li>
+  <a href="6_aplica.html">
+    <span class="fa fa-bar-chart"></span>
+     
+    Estudos de caso
+  </a>
+</li>
+<li>
+  <a href="7_conclusao.html">
+    <span class="fa fa-file-text"></span>
+     
+    Considerações finais
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://lineu96.github.io/st/">
+    <span class="fa fa-user"></span>
+     
+    Lineu A.C.F
+  </a>
+</li>
+<li>
+  <a href="https://github.com/lineu96">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<style type="text/css">
+table.header {
+    margin-top: 10px;
+    border-collapse: unset;
+}
+table.header > tbody {
+    border-bottom: 0px;
+    border-top: 0px;
+}
+</style>
+
+<table class="header" width="100%" align="center">
+  <tr>
+    <td align="left" valign="bottom" width="90px">
+      <a href="link.com">
+        <img src="img/mcglm.png" width="100%" />
+      </a>
+    </td>
+    <td align="left" valign="center">
+      <div class="header">
+        <h4 style="font-size: 20px; margin: 10px auto 0 10px">
+          Testes de hipótese em Modelos Multivariados de Covariância Linear Generalizada (McGLM)
+        </h4>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<hr />
+<center>
+<font size="6">
+<p align=”center”>
+<b> Modelos Multivariados de Covariância Linear Generalizada </b>
+</center>
+</font>
+</center>
+<hr />
+<font size="4">
+<p align=”center”>
+<a href="https://lineu96.github.io/st/">Lineu Alberto Cavazani de Freitas</a>
+</center>
+<p></font></p>
+<hr />
+<div id="introducao" class="section level1">
+<h1>Introdução</h1>
+<p>Os Modelos Linerares Generalizados (GLM), propostos por <span class="citation">Nelder and Wedderburn (1972)</span>, são uma forma de modelagem univariada para dados de diferentes naturezas, tais como respostas contínuas, binárias e contagens. Tais características tornam essa classe de modelos uma flexível ferramenta de modelagem aplicável a diversos tipos de problema. Contudo, por mais flexível e discutida na literatura, essa classe apresenta duas principais restrições:</p>
+<ol style="list-style-type: decimal">
+<li><p>A incapacidade de lidar com observações dependentes.</p></li>
+<li><p>E/ou a incapacidade de lidar múltiplas respostas simultaneamente.</p></li>
+</ol>
+<p>Com o objetivo de contornar estas restrições, foi proposta por <span class="citation">Bonat and Jørgensen (2016)</span>, uma estrutura geral para análise de dados não gaussianos com múltiplas respostas em que não se faz suposições quanto à independência das observações, os chamados Modelos Multivariados de Covariância Linear Generalizada (McGLM).</p>
+<hr />
+<p>Vamos discutir os McGLM como uma extensão dos GLM. Vale ressaltar que é usada uma especificação menos usual de um Modelo Linear Generalizado, porém trata-se de uma notação mais conveniente para chegar à uma especificação melhor construída de um Modelo Multivariado de Covariância Linear Generalizada.</p>
+<p>Sendo assim, neste material serão tratados os seguintes assuntos:</p>
+<ul>
+<li><p>Especificação de um GLM.</p></li>
+<li><p>Especificação de um cGLM.</p></li>
+<li><p>Especificação de um McGLM.</p></li>
+<li><p>Estimação e inferência dos parâmetros de um McGLM.</p></li>
+</ul>
+<hr />
+</div>
+<div id="glm" class="section level1">
+<h1>GLM</h1>
+<p>Seja <span class="math inline">\(\boldsymbol{Y}\)</span> um vetor <span class="math inline">\(N \times 1\)</span> de valores observados da variável resposta, <span class="math inline">\(\boldsymbol{X}\)</span> uma matriz de delineamento <span class="math inline">\(N \times k\)</span> e <span class="math inline">\(\boldsymbol{\beta}\)</span> um vetor de parâmetros de regressão <span class="math inline">\(k \times 1\)</span>, um GLM pode ser descrito da forma</p>
+<p><span class="math display">\[\begin{equation}
+      \begin{aligned}
+        \mathrm{E}(\boldsymbol{Y}) &amp;=
+         \boldsymbol{\mu} =
+            g^{-1}(\boldsymbol{X} \boldsymbol{\beta}),
+            \\
+        \mathrm{Var}(\boldsymbol{Y}) &amp;=
+          \Sigma =
+          \mathrm{V}\left(\boldsymbol{\mu}; p\right)^{1/2}\left(\tau_0\boldsymbol{I}\right)\mathrm{V}\left(\boldsymbol{\mu}; p\right)^{1/2},
+      \end{aligned}
+\end{equation}\]</span></p>
+<p>em que <span class="math inline">\(g(.)\)</span> é a função de ligação, <span class="math inline">\(\mathrm{V}\left(\boldsymbol{\mu}; p\right)\)</span> é uma matriz diagonal em que as entradas principais são dadas pela função de variância aplicada ao vetor <span class="math inline">\(\boldsymbol{\mu}\)</span>, <span class="math inline">\(p\)</span> é o parâmetro de potência, <span class="math inline">\(\tau_0\)</span> o parâmetro de dispersão e <span class="math inline">\(\boldsymbol{I}\)</span> é a matriz identidade de ordem <span class="math inline">\(N\times N\)</span>.</p>
+<p>Os GLM fazem uso de apenas duas funções, a função de variância e de ligação. Diferentes escolhas de funções de variância implicam em diferentes suposições a respeito da distribuição da variável resposta. Dentre as funções de variância conhecidas, podemos citar:</p>
+<ol style="list-style-type: decimal">
+<li><p>A função de variância potência, que caracteriza a família Tweedie de distribuições, em que a função de variância é dada por <span class="math inline">\(\vartheta\left(\boldsymbol{\mu}; p\right) = \mu^p\)</span>, na qual destacam-se a distribuições: Normal (<span class="math inline">\(p\)</span> = 0), Poisson (<span class="math inline">\(p\)</span> = 1), gama (<span class="math inline">\(p\)</span> = 2) e Normal inversa (<span class="math inline">\(p\)</span> = 3) <span class="citation">(Jørgensen 1987, 1997)</span>.</p></li>
+<li><p>A função de dispersão Poisson–Tweedie, a qual caracteriza a família Poisson-Tweedie de distribuições, que visa contornar a inflexibilidade da utilização da função de variância potência para respostas discretas. A família Poisson-Tweedie tem função de dispersão dada por <span class="math inline">\(\vartheta\left(\boldsymbol{\mu}; p\right) = \mu + \mu^p\)</span> e tem como casos particulares os mais famosos modelos para dados de contagem: Hermite (<span class="math inline">\(p\)</span> = 0), Neyman tipo A (<span class="math inline">\(p\)</span> = 1), binomial negativa (<span class="math inline">\(p\)</span> = 2) e Poisson–inversa gaussiana (p = <span class="math inline">\(3\)</span>) <span class="citation">(Jørgensen and Kokonendji 2015)</span>.</p></li>
+<li><p>A função de variância binomial, dada por <span class="math inline">\(\vartheta(\boldsymbol{\mu}) = \mu(1 - \mu)\)</span>, utilizada quando a variável resposta é binária, restrita a um intervalo ou quando tem-se o número de sucessos em um número de tentativas.</p></li>
+</ol>
+<p>Lembre-se que o GLM é uma classe de modelos de regressão univariados em que um dos pressupostos é a indepenência entre as observações. Esta independência é especificada na matriz identidade no centro da equação que define a matriz de variância e covariância. Podemos imaginar que, substituindo esta matriz identidade por uma matriz qualquer que reflita a relação entre os indivíduos da amostra teremos uma extensão do Modelo Linear Generalizado para observações dependentes. É justamente essa a ideia dos Modelos de Covariância Linear Generalizada, o cGLM.</p>
+<hr />
+</div>
+<div id="cglm" class="section level1">
+<h1>cGLM</h1>
+<p>Os cGLM são uma alternativa para problemas em que a suposição de independência entre as observações não é atendida. Neste caso, a solução proposta é substituir a matriz identidade <span class="math inline">\(\boldsymbol{I}\)</span> da equação que descreve a matriz de variância e covariância por uma matriz não diagonal <span class="math inline">\(\boldsymbol{\Omega({\tau})}\)</span> que descreva adequadamente a estrutura de correlação entre as observações. Trata-se de uma ideia similar à proposta de <span class="citation">Liang and Zeger (1986)</span> nos modelos GEE (Generalized Estimation Equation), em que utiliza-se uma matriz de correlação de trabalho para considerar a dependência entre as observações. A matriz <span class="math inline">\(\boldsymbol{\Omega({\tau})}\)</span> é descrita como uma combinação de matrizes conhecidas tal como nas propostas de <span class="citation">Anderson and others (1973)</span> e <span class="citation">Pourahmadi (2000)</span>, podendo ser escrita da forma</p>
+<p><span class="math display">\[\begin{equation}
+h\left \{ \boldsymbol{\Omega}(\boldsymbol{\tau}) \right \} = \tau_0Z_0 + \ldots + \tau_DZ_D,
+\end{equation}\]</span></p>
+<p>em que <span class="math inline">\(h(.)\)</span> é a função de ligação de covariância, <span class="math inline">\(Z_d\)</span> com <span class="math inline">\(d\)</span> = 0,<span class="math inline">\(\ldots\)</span>, D são matrizes que representam a estrutura de covariância presente nos dados e <span class="math inline">\(\boldsymbol{\tau}\)</span> = <span class="math inline">\((\tau_0, \ldots, \tau_D)\)</span> é um vetor <span class="math inline">\((D + 1) \times 1\)</span> de parâmetros de dispersão. Tal estrutura pode ser vista como um análogo ao preditor linear para a média e foi nomeado como preditor linear matricial. A especificação da função de ligação de covariância é discutida por <span class="citation">Pinheiro and Bates (1996)</span> e é possível selecionar combinações de matrizes para se obter os mais conhecidos modelos da literatura para dados longitudinais, séries temporais, dados espaciais e espaço-temporais. Maiores detalhes são discutidos por <span class="citation">Demidenko (2013)</span>.</p>
+<p>Com isso, substituindo a matriz identidade pela equação do preditor linear matricial, temos uma classe com toda a flexibilidade dos GLM, porém contornando a restrição da independência entre as observações desde que o preditor linear matricial seja adequadamente especificado.</p>
+<p>Deste modo, é contornada a primeira restrição dos GLM. A segunda restrição diz respeito às múltiplas respostas e, resolvendo esta restrição, chegamos ao McGLM.</p>
+<hr />
+</div>
+<div id="mcglm" class="section level1">
+<h1>McGLM</h1>
+<p>O McGLM pode ser entendido como uma extensão multivariada do cGLM e contorna as duas principais restrições presentes nos GLM, pois além de permitir a modelagem de dados com estrutura de covariância, permite modelar múltiplas respostas.</p>
+<p>Considre <span class="math inline">\(\boldsymbol{Y}_{N \times R} = \left \{ \boldsymbol{Y}_1, \dots, \boldsymbol{Y}_R \right \}\)</span> uma matriz de variáveis resposta e <span class="math inline">\(\boldsymbol{M}_{N \times R} = \left \{ \boldsymbol{\mu}_1, \dots, \boldsymbol{\mu}_R \right \}\)</span> uma matriz de valores esperados. Cada uma das variáveis resposta tem sua própria matriz de variância e covariância, responsável por modelar a covariância dentro de cada resposta, sendo expressa por</p>
+<p><span class="math display">\[\begin{equation}
+\Sigma_r =
+\mathrm{V}_r\left(\boldsymbol{\mu}_r; p\right)^{1/2}\boldsymbol{\Omega}_r\left(\boldsymbol{\tau}\right)\mathrm{V}_r\left(\boldsymbol{\mu}_r; p\right)^{1/2}.
+\end{equation}\]</span></p>
+<p>Além disso, é necessária uma matriz de correlação <span class="math inline">\(\Sigma_b\)</span>, de ordem <span class="math inline">\(R \times R\)</span>, que descreve a correlação entre as variáveis resposta. Para a especificação da matriz de variância e covariância conjunta é utilizado o produto Kronecker generalizado, proposto por <span class="citation">Martinez-Beneito (2013)</span>.</p>
+<p>Finalmente, um MCGLM é descrito como</p>
+<p><span class="math display">\[
+\begin{equation}
+\label{eq:mcglm}
+      \begin{aligned}
+        \mathrm{E}(\boldsymbol{Y}) &amp;=
+          \boldsymbol{M} =
+            \{g_1^{-1}(\boldsymbol{X}_1 \boldsymbol{\beta}_1),
+            \ldots,
+            g_R^{-1}(\boldsymbol{X}_R \boldsymbol{\beta}_R)\}
+          \\
+        \mathrm{Var}(\boldsymbol{Y}) &amp;=
+          \boldsymbol{C} =
+            \boldsymbol{\Sigma}_R \overset{G} \otimes
+            \boldsymbol{\Sigma}_b,
+      \end{aligned}
+\end{equation}
+\]</span> em que <span class="math inline">\(\boldsymbol{\Sigma}_R \overset{G} \otimes \boldsymbol{\Sigma}_b = \mathrm{Bdiag}(\tilde{\boldsymbol{\Sigma}}_1, \ldots, \tilde{\boldsymbol{\Sigma}}_R) (\boldsymbol{\Sigma}_b \otimes \boldsymbol{I}) \mathrm{Bdiag}(\tilde{\boldsymbol{\Sigma}}_1^\top, \ldots, \tilde{\boldsymbol{\Sigma}}_R^\top)\)</span> é o produto generalizado de Kronecker, a matriz <span class="math inline">\(\tilde{\boldsymbol{\Sigma}}_r\)</span> denota a matriz triangular inferior da decomposição de Cholesky da matriz <span class="math inline">\({\boldsymbol{\Sigma}}_r\)</span>, o operador <span class="math inline">\(\mathrm{Bdiag}\)</span> denota a matriz bloco-diagonal e <span class="math inline">\(\boldsymbol{I}\)</span> uma matriz identidade <span class="math inline">\(N \times N\)</span>.</p>
+<p>Toda metodologia do McGLM está implementada no pacote <code>mcglm</code> <span class="citation">(Bonat 2018)</span> do software estatístico R <span class="citation">(R Core Team 2018)</span>.</p>
+<hr />
+</div>
+<div id="estimacao-e-inferencia" class="section level1">
+<h1>Estimação e Inferência</h1>
+<p>Os McGLMs são ajustados baseados no método de funções de estimação descritos em detalhes por <span class="citation">Bonat and Jørgensen (2016)</span> e <span class="citation">Jørgensen and Knudsen (2004)</span>. Nesta seção é apresentada uma visão geral do algoritmo e da distribuição assintótica dos estimadores baseados em funções de estimação.</p>
+<p>As suposições de segundo momento dos McGLM permitem a divisão dos parâmetros em dois conjuntos: <span class="math inline">\(\boldsymbol{\theta} = (\boldsymbol{\beta}^{\top}, \boldsymbol{\lambda}^{\top})^{\top}\)</span>. Desta forma, <span class="math inline">\(\boldsymbol{\beta} = (\boldsymbol{\beta}_1^\top, \ldots, \boldsymbol{\beta}_R^\top)^\top\)</span> é um vetor <span class="math inline">\(K \times 1\)</span> de parâmetros de regressão e <span class="math inline">\(\boldsymbol{\lambda} = (\rho_1, \ldots, \rho_{R(R-1)/2}, p_1, \ldots, p_R, \boldsymbol{\tau}_1^\top, \ldots, \boldsymbol{\tau}_R^\top)^\top\)</span> é um vetor <span class="math inline">\(Q \times 1\)</span> de parâmetros de dispersão. Além disso, <span class="math inline">\(\mathcal{Y} = (\boldsymbol{Y}_1^\top, \ldots, \boldsymbol{Y}_R^\top)^\top\)</span> denota o vetor empilhado de ordem <span class="math inline">\(NR \times 1\)</span> da matriz de variáveis resposta <span class="math inline">\(\boldsymbol{Y}_{N \times R}\)</span> e <span class="math inline">\(\mathcal{M} = (\boldsymbol{\mu}_1^\top, \ldots, \boldsymbol{\mu}_R^\top)^\top\)</span> denota o vetor empilhado de ordem <span class="math inline">\(NR \times 1\)</span> da matriz de valores esperados <span class="math inline">\(\boldsymbol{M}_{N \times R}\)</span>.</p>
+<p>Para estimação dos parâmetros de regressão é utilizada a função quasi-score <span class="citation">(Liang and Zeger 1986)</span>, representada por <span class="math display">\[\begin{equation}
+      \begin{aligned}
+        \psi_{\boldsymbol{\beta}}(\boldsymbol{\beta},
+          \boldsymbol{\lambda}) = \boldsymbol{D}^\top
+            \boldsymbol{C}^{-1}(\mathcal{Y} - \mathcal{M}),
+\end{aligned}
+\end{equation}\]</span> em que <span class="math inline">\(\boldsymbol{D} = \nabla_{\boldsymbol{\beta}} \mathcal{M}\)</span> é uma matriz <span class="math inline">\(NR \times K\)</span>, e <span class="math inline">\(\nabla_{\boldsymbol{\beta}}\)</span> denota o operador gradiente. Utilizando a função quasi-score a matriz <span class="math inline">\(K \times K\)</span> de sensitividade de <span class="math inline">\(\psi_{\boldsymbol{\beta}}\)</span> é dada por <span class="math display">\[\begin{equation}
+\begin{aligned}
+S_{\boldsymbol{\beta}} = E(\nabla_{\boldsymbol{\beta} \psi \boldsymbol{\beta}}) = -\boldsymbol{D}^{\top} \boldsymbol{C}^{-1} \boldsymbol{D},
+\end{aligned}
+\end{equation}\]</span> enquanto que a matriz <span class="math inline">\(K \times K\)</span> de variabilidade de <span class="math inline">\(\psi_{\boldsymbol{\beta}}\)</span> é escrita como <span class="math display">\[\begin{equation}
+\begin{aligned}
+V_{\boldsymbol{\beta}} = VAR(\psi \boldsymbol{\beta}) = \boldsymbol{D}^{\top} \boldsymbol{C}^{-1} \boldsymbol{D}.
+\end{aligned}
+\end{equation}\]</span></p>
+<p>Para os parâmetros de dispersão é utilizada a função de estimação de Pearson, definida da forma <span class="math display">\[\begin{equation}
+      \begin{aligned}
+        \psi_{\boldsymbol{\lambda}_i}(\boldsymbol{\beta},
+        \boldsymbol{\lambda}) =
+        \mathrm{tr}(W_{\boldsymbol{\lambda}i}
+          (\boldsymbol{r}^\top\boldsymbol{r} -
+          \boldsymbol{C})),  i = 1,.., Q, 
+    \end{aligned}
+\end{equation}\]</span> em que <span class="math inline">\(W_{\boldsymbol{\lambda}i} = -\frac{\partial  \boldsymbol{C}^{-1}}{\partial \boldsymbol{\lambda}_i}\)</span> e <span class="math inline">\(\boldsymbol{r} = (\mathcal{Y} - \mathcal{M})\)</span>. A entrada <span class="math inline">\((i,j)\)</span> da matriz de sensitividade <span class="math inline">\(Q \times Q\)</span> de <span class="math inline">\(\psi_{\boldsymbol{\lambda}}\)</span> é dada por <span class="math display">\[\begin{equation}
+      \begin{aligned}
+S_{\boldsymbol{\lambda_{ij}}} = E \left (\frac{\partial }{\partial \boldsymbol{\lambda_{i}}} \psi \boldsymbol{\lambda_{j}}\right) = -tr(W_{\boldsymbol{\lambda_{i}}} CW_{\boldsymbol{\lambda_{J}}} C).
+    \end{aligned}
+\end{equation}\]</span> Já a entrada <span class="math inline">\((i,j)\)</span> da matriz de variabilidade <span class="math inline">\(Q \times Q\)</span> de <span class="math inline">\(\psi_{\boldsymbol{\lambda}}\)</span> é definida por <span class="math display">\[\begin{equation}
+      \begin{aligned}
+V_{\boldsymbol{\lambda_{ij}}} = Cov\left ( \psi_{\boldsymbol{\lambda_{i}}}, \psi_{\boldsymbol{\lambda_{j}}} \right) = 2tr(W_{\boldsymbol{\lambda_{i}}} CW_{\boldsymbol{\lambda_{J}}} C) + \sum_{l=1}^{NR} k_{l}^{(4)} (W_{\boldsymbol{\lambda_{i}}})_{ll} (W_{\boldsymbol{\lambda_{j}}})_{ll},
+    \end{aligned}
+\end{equation}\]</span> em que <span class="math inline">\(k_{l}^{(4)}\)</span> denota a quarta cumulante de <span class="math inline">\(\mathcal{Y}_{l}\)</span>. No processo de estimação dos McGLM são usadas as versões empíricas.</p>
+<p>Para se levar em conta a covariância entre os vetores <span class="math inline">\(\boldsymbol{\beta}\)</span> e <span class="math inline">\(\boldsymbol{\lambda}\)</span>, <span class="citation">Bonat and Jørgensen (2016)</span> obtiveram as matrizes de sensitividade e variabilidade cruzadas, denotadas por <span class="math inline">\(S_{\boldsymbol{\lambda \beta}}\)</span>, <span class="math inline">\(S_{\boldsymbol{\beta \lambda}}\)</span> e <span class="math inline">\(V_{\boldsymbol{\lambda \beta}}\)</span>, mais detalhes em <span class="citation">Bonat and Jørgensen (2016)</span>. As matrizes de sensitividade e variabilidade conjuntas de <span class="math inline">\(\psi_{\boldsymbol{\beta}}\)</span> e <span class="math inline">\(\psi_{\boldsymbol{\lambda}}\)</span> são denotados por</p>
+<p><span class="math display">\[\begin{equation}
+      \begin{aligned}
+S_{\boldsymbol{\theta}} = \begin{bmatrix}
+S_{\boldsymbol{\beta}} &amp; S_{\boldsymbol{\beta\lambda}} \\ 
+S_{\boldsymbol{\lambda\beta}} &amp; S_{\boldsymbol{\lambda}} 
+\end{bmatrix} \text{e } V_{\boldsymbol{\theta}} = \begin{bmatrix}
+V_{\boldsymbol{\beta}} &amp; V^{\top}_{\boldsymbol{\lambda\beta}} \\ 
+V_{\boldsymbol{\lambda\beta}} &amp; V_{\boldsymbol{\lambda}} 
+\end{bmatrix}.
+\end{aligned}
+\end{equation}\]</span></p>
+<p>Seja <span class="math inline">\(\boldsymbol{\hat{\theta}} = (\boldsymbol{\hat{\beta}^{\top}}, \boldsymbol{\hat{\lambda}^{\top}})^{\top}\)</span> o estimador baseado em funções de estimação de <span class="math inline">\(\boldsymbol{\theta}\)</span>. Então, a distribuição assintótica de <span class="math inline">\(\boldsymbol{\hat{\theta}}\)</span> é <span class="math display">\[\begin{equation}
+\begin{aligned}
+\boldsymbol{\hat{\theta}} \sim N(\boldsymbol{\theta}, J_{\boldsymbol{\theta}}^{-1}),
+\end{aligned}
+\end{equation}\]</span> em que <span class="math inline">\(J_{\boldsymbol{\theta}}^{-1}\)</span> é a inversa da matriz de informação de Godambe, dada por <span class="math inline">\(J_{\boldsymbol{\theta}}^{-1} = S_{\boldsymbol{\theta}}^{-1} V_{\boldsymbol{\theta}} S_{\boldsymbol{\theta}}^{-\top}\)</span>, em que <span class="math inline">\(S_{\boldsymbol{\theta}}^{-\top} = (S_{\boldsymbol{\theta}}^{-1})^{\top}.\)</span></p>
+<p>Para resolver o sistema de equações <span class="math inline">\(\psi_{\boldsymbol{\beta}} = 0\)</span> e <span class="math inline">\(\psi_{\boldsymbol{\lambda}} = 0\)</span> faz-se uso do algoritmo Chaser modificado, proposto por <span class="citation">Jørgensen and Knudsen (2004)</span>, que fica definido como</p>
+<p><span class="math display">\[\begin{equation}
+\begin{aligned}
+\begin{matrix}
+\boldsymbol{\beta}^{(i+1)} = \boldsymbol{\beta}^{(i)}- S_{\boldsymbol{\beta}}^{-1} \psi \boldsymbol{\beta} (\boldsymbol{\beta}^{(i)}, \boldsymbol{\lambda}^{(i)}), \\ 
+\boldsymbol{\lambda}^{(i+1)} = \boldsymbol{\lambda}^{(i)}\alpha S_{\boldsymbol{\lambda}}^{-1} \psi \boldsymbol{\lambda} (\boldsymbol{\beta}^{(i+1)}, \boldsymbol{\lambda}^{(i)}).
+\end{matrix}
+\end{aligned}
+\end{equation}\]</span></p>
+<hr />
+<center>
+<table>
+<tr>
+<td>
+<img src="img/dsbd.png" alt="Drawing" style="width: 250px;"/>
+</td>
+<td>
+           
+</td>
+<td>
+<img src="img/ufpr.jpg" alt="Drawing" style="width: 200px;"/>
+</td>
+<td>
+           
+</td>
+</center>
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;">
+
+</div>
+<div id="refs" class="references">
+<div id="ref-Anderson73">
+<p>Anderson, TW, and others. 1973. “Asymptotically Efficient Estimation of Covariance Matrices with Linear Structure.” <em>The Annals of Statistics</em> 1 (1). Institute of Mathematical Statistics: 135–41.</p>
+</div>
+<div id="ref-mcglm">
+<p>Bonat, Wagner Hugo. 2018. “Multiple Response Variables Regression Models in R: The mcglm Package.” <em>Journal of Statistical Software</em> 84 (4): 1–30. <a href="https://doi.org/10.18637/jss.v084.i04">https://doi.org/10.18637/jss.v084.i04</a>.</p>
+</div>
+<div id="ref-Bonat16">
+<p>Bonat, Wagner Hugo, and Bent Jørgensen. 2016. “Multivariate Covariance Generalized Linear Models.” <em>Journal of the Royal Statistical Society: Series C (Applied Statistics)</em> 65 (5). Wiley Online Library: 649–75.</p>
+</div>
+<div id="ref-Demidenko13">
+<p>Demidenko, Eugene. 2013. <em>Mixed Models: Theory and Applications with R</em>. John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-Jorgensen87">
+<p>Jørgensen, Bent. 1987. “Exponential Dispersion Models.” <em>Journal of the Royal Statistical Society: Series B (Methodological)</em> 49 (2). Wiley Online Library: 127–45.</p>
+</div>
+<div id="ref-Jorgensen97">
+<p>———. 1997. <em>The Theory of Dispersion Models</em>. CRC Press.</p>
+</div>
+<div id="ref-jorg04">
+<p>Jørgensen, Bent, and Sven Jesper Knudsen. 2004. “Parameter Orthogonality and Bias Adjustment for Estimating Functions.” <em>Scandinavian Journal of Statistics</em> 31 (1). Wiley Online Library: 93–114.</p>
+</div>
+<div id="ref-Jorgensen15">
+<p>Jørgensen, Bent, and Célestin C Kokonendji. 2015. “Discrete Dispersion Models and Their Tweedie Asymptotics.” <em>AStA Advances in Statistical Analysis</em> 100 (1). Springer: 43–78.</p>
+</div>
+<div id="ref-Liang86">
+<p>Liang, Kung-Yee, and Scott L Zeger. 1986. “Longitudinal Data Analysis Using Generalized Linear Models.” <em>Biometrika</em> 73 (1). Oxford University Press: 13–22.</p>
+</div>
+<div id="ref-martinez13">
+<p>Martinez-Beneito, Miguel A. 2013. “A General Modelling Framework for Multivariate Disease Mapping.” <em>Biometrika</em> 100 (3). Oxford University Press: 539–53.</p>
+</div>
+<div id="ref-Nelder72">
+<p>Nelder, John Ashworth, and Robert William Maclagan Wedderburn. 1972. “Generalized Linear Models.” <em>Journal of the Royal Statistical Society. Series A (General)</em> 135: 370–84.</p>
+</div>
+<div id="ref-Pinheiro96">
+<p>Pinheiro, José C, and Douglas M Bates. 1996. “Unconstrained Parametrizations for Variance-Covariance Matrices.” <em>Statistics and Computing</em> 6 (3). Springer: 289–96.</p>
+</div>
+<div id="ref-Pourahmadi00">
+<p>Pourahmadi, Mohsen. 2000. “Maximum Likelihood Estimation of Generalised Linear Models for Multivariate Normal Covariance Matrix.” <em>Biometrika</em> 87 (2). Oxford University Press: 425–35.</p>
+</div>
+<div id="ref-softwareR">
+<p>R Core Team. 2018. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.</p>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

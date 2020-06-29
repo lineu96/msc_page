@@ -1,0 +1,53 @@
+---
+title: "Sobre esta página"
+---
+
+---
+
+<font size="4"> 
+<p align=”center”> [Lineu Alberto Cavazani de Freitas](https://lineu96.github.io/st/) </center>
+</font> 
+
+---
+
+Esta página tem como objetivo hospedar o material referente ao trabalho que desenvolvo no mestrado sob a orientação do professor [Wagner Hugo Bonat](http://www.leg.ufpr.br/~wagner/) e co-orientação do professor [Marco Antonio Zanata Alves](https://web.inf.ufpr.br/mazalves/) no [Programa de Pós Graduação em Informática](http://www.prppg.ufpr.br/ppginformatica/?lang=pb) da Universidade Federal do Paraná. O trabalho está inserido na área de concentração de Ciência da Computação, linha de pesquisa [Tecnologia da Informação](http://www.prppg.ufpr.br/ppginformatica/index.php/tecnologia-da informacao/?lang=pb) e grupo de pesquisa [Data Science & Big Data](https://web.inf.ufpr.br/dsbd/). 
+
+---
+
+Nosso interesse é desenvolver um ambiente para realização de testes de hipótese gerais sobre parâmetros de regressão, dispersão e potência além de desenvolver procedimentos para Análises de Variância Multivariadas no contexto dos Modelos Multivariados de Covariância Linear Generalizada. O comportamento dos testes e procedimentos propostos serão verificados através de estudos de simulação e serão aplicados a estudos de caso.
+
+---
+
+Este projeto teve início em 2018 quando eu e uma colega de curso (Jhenifer Caetano Veloso), desenvolvemos nosso Trabalho de Conclusão de Curso da graduação em Estatística na Universidade Federal do Paraná sob orientação do professor Wagner. No TCC estudamos o teste Wald para Análise de Variância Multivariada para dados não gaussianos.
+
+Materiais desenvolvidos na graduação:
+
+ - Texto
+ 
+ - Apresentação
+ 
+<center>
+<td> <img src="img/defesa.jpg" alt="Drawing" style="width: 500px;"/> </td>
+</center>
+
+---
+
+`Foto da apresentação do TCC. Da esquerda para a direita:` 
+
+`Prof. Wagner Bonat (orientador), Prof. Walmes Zeviani (banca),`
+
+`Lineu Alberto, Jhenifer Veloso, Prof. Cesar Taconeli (banca).`
+
+---
+
+<center>
+<table><tr>
+<td> <img src="img/dsbd.png" alt="Drawing" style="width: 250px;"/> </td>
+<td> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </td>
+<td> <img src="img/ufpr.jpg" alt="Drawing" style="width: 200px;"/> </td>
+<td> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </td>
+</center>
+
+
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
+

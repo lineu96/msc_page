@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>2_wald_test.utf8.md</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="0_intro.html">
+    <span class="fa fa-commenting-o"></span>
+     
+    Introdução
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Metodologia
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1_mcglm.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        McGLM
+      </a>
+    </li>
+    <li>
+      <a href="2_wald_test.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        Teste Wald
+      </a>
+    </li>
+    <li>
+      <a href="3_anova.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        ANOVA
+      </a>
+    </li>
+    <li>
+      <a href="4_mc_manova_wald.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        Wald MANOVA
+      </a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="5_simula.html">
+    <span class="fa fa-code"></span>
+     
+    Estudos de simulação
+  </a>
+</li>
+<li>
+  <a href="6_aplica.html">
+    <span class="fa fa-bar-chart"></span>
+     
+    Estudos de caso
+  </a>
+</li>
+<li>
+  <a href="7_conclusao.html">
+    <span class="fa fa-file-text"></span>
+     
+    Considerações finais
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://lineu96.github.io/st/">
+    <span class="fa fa-user"></span>
+     
+    Lineu A.C.F
+  </a>
+</li>
+<li>
+  <a href="https://github.com/lineu96">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<style type="text/css">
+table.header {
+    margin-top: 10px;
+    border-collapse: unset;
+}
+table.header > tbody {
+    border-bottom: 0px;
+    border-top: 0px;
+}
+</style>
+
+<table class="header" width="100%" align="center">
+  <tr>
+    <td align="left" valign="bottom" width="90px">
+      <a href="link.com">
+        <img src="img/mcglm.png" width="100%" />
+      </a>
+    </td>
+    <td align="left" valign="center">
+      <div class="header">
+        <h4 style="font-size: 20px; margin: 10px auto 0 10px">
+          Testes de hipótese em Modelos Multivariados de Covariância Linear Generalizada (McGLM)
+        </h4>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<hr />
+<center>
+<font size="6">
+<p align=”center”>
+<b> Teste Wald </b>
+</center>
+</font>
+</center>
+<hr />
+<font size="4">
+<p align=”center”>
+<a href="https://lineu96.github.io/st/">Lineu Alberto Cavazani de Freitas</a>
+</center>
+<p></font></p>
+<hr />
+<div id="introducao" class="section level1">
+<h1>Introdução</h1>
+<p>O teste Wald é um teste de hipóteses amplamente difundido para análises de Modelos Lineares e Modelos Lineares Generalizados para verificar suposições sobre os parâmetros do modelo, isto é, verifcar se a estimativa do parâmetro é ou não estatísticamente igual a um valor qualquer.</p>
+<p>A grosso modo, é um teste que avalia a distância entre a estimativa do parâmetro e o valor postulado sob a hipótese nula. Esta diferença é ainda ponderada por uma medida de precisão da estimativa do modelo. Quanto mais distante de 0 for o valor da distância ponderada, menor é a chance da hipótese de igualdade ser verdadeira, ou seja, do valor postulado ser igual ao valor estimado.</p>
+<p>O teste utiliza distribuição assintótica Qui-quadrado ( <span class="math inline">\(\chi^2\)</span> ) para verificar a validade das hipóteses e determinar significância estatística. Além disso, é possível utilizar testes do tipo Wald para geração de quadros de Análise de Variância (ANOVA).</p>
+<hr />
+<p>Neste material serão tratados os seguintes assuntos:</p>
+<ul>
+<li><p>Tipos de hipóteses que podem ser testadas via teste Wald e diferentes notações para especificar as hipóteses.</p></li>
+<li><p>Teste de Wald para um único parâmetro: suposições, hipóteses, estatísticas de teste e distribuição da estatística de teste.</p></li>
+<li><p>Teste de Wald para múltiplos parâmetros: suposições, hipóteses, estatística de teste e distribuição da estatística de teste.</p></li>
+</ul>
+<hr />
+</div>
+<div id="hipoteses" class="section level1">
+<h1>Hipóteses</h1>
+<p>As hipóteses de interesse em que há possibilidade de se aplicar o teste Wald são do tipo:</p>
+<p><span class="math display">\[H_0: \boldsymbol{\beta} = \boldsymbol{\beta^*} \ vs \ H_1: \boldsymbol{\beta} \neq \boldsymbol{\beta^*}.\]</span></p>
+<p>Em que <span class="math inline">\(\boldsymbol{\beta}\)</span> pode representar um único ou vários parâmetros de regressão a serem testados simultaneamente e <span class="math inline">\(\boldsymbol{\beta^*}\)</span> é um valor ou vetor de valores que desejamos comparar com as estimativas do modelo, isto é, sob hipótese nula.</p>
+<hr />
+<p>Uma forma alternativa de se escrever as hipóteses é:</p>
+<p><span class="math display">\[H_0: \boldsymbol{L}\boldsymbol{\beta} = \boldsymbol{c} \ vs \ H_1: \boldsymbol{L}\boldsymbol{\beta} \neq \boldsymbol{c}.\]</span></p>
+<p>Em que <span class="math inline">\(\boldsymbol{L}\)</span> é uma matriz que especifica quais parâmetros serão testados. Seu número de linhas é o número de parâmetros a serem testados (<span class="math inline">\(s\)</span>) e o número de colunas é o mesmo que o número de parâmetros do modelo (<span class="math inline">\(k\)</span>). <span class="math inline">\(\boldsymbol{\beta}\)</span> é o vetor completo de parâmetros estimados no modelo, ou seja, é um vetor de <span class="math inline">\(k\)</span> elementos. E <span class="math inline">\(\boldsymbol{c}\)</span> é um vetor de valores a serem confrontados com as estimativas originais do modelo, com dimensão <span class="math inline">\(s\)</span>.</p>
+<p>Sendo assim, <span class="math inline">\(\boldsymbol{L}\)</span> tem dimensão <span class="math inline">\(s \times k\)</span>, <span class="math inline">\(\boldsymbol{\beta}\)</span> tem dimensão <span class="math inline">\(k \times 1\)</span> e o produto <span class="math inline">\(\boldsymbol{L\beta}\)</span> tem dimensão <span class="math inline">\(s \times 1\)</span>, bem como <span class="math inline">\(\boldsymbol{c}\)</span>.</p>
+<hr />
+<div id="exemplos" class="section level2">
+<h2>Exemplos</h2>
+<p>Para fins de ilustração, considere um modelo qualquer com preditor dado por:</p>
+<p><span class="math display">\[g(\mu) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3\]</span></p>
+<hr />
+<div id="hipoteses-para-um-parametro" class="section level3">
+<h3>Hipóteses para um parâmetro</h3>
+<p>Podemos estar interessados em testar um único parâmetro, isto é, uma hipótese como:</p>
+<p><span class="math display">\[H_0: \beta_1 = 0 \ vs \ H_1: \beta_1 \neq 0.\]</span></p>
+<p>Ou seja, estaríamos verificando se há evidência suficiente para afirmar que o parâmetro <span class="math inline">\(\beta_1\)</span> é igual a 0.</p>
+<hr />
+<p>Esta mesma hipótese pode ser escrita na notação genérica <span class="math inline">\(\boldsymbol{L\beta} = \boldsymbol{c}\)</span>, as hipóteses de interesse são:</p>
+<p><span class="math display">\[H_0: \boldsymbol{L\beta} = \boldsymbol{c} \ vs \ H_1: \boldsymbol{L\beta} \neq \boldsymbol{c}.\]</span></p>
+<p>Sendo assim:</p>
+<ul>
+<li><p><span class="math inline">\(\boldsymbol{L}\)</span> = <span class="math inline">\(\begin{bmatrix} 0 &amp; 1 &amp; 0 &amp; 0 \end{bmatrix}\)</span>, uma matriz 1x4.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{\beta}\)</span> = <span class="math inline">\(\begin{bmatrix} \beta_0\\ \beta_1\\ \beta_2\\ \beta_3 \end{bmatrix}\)</span>, uma matriz 4x1.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{c}\)</span> = <span class="math inline">\(\begin{bmatrix} 0 \end{bmatrix}\)</span>, uma matriz 1x1.</p></li>
+</ul>
+<p>Note que as dimensões são compatíveis e o resultado do produto é o mesmo que o da notação <span class="math inline">\(\boldsymbol{\beta} = \boldsymbol{\beta^*}\)</span>.</p>
+<hr />
+</div>
+<div id="hipoteses-para-multiplos-parametros" class="section level3">
+<h3>Hipóteses para múltiplos parâmetros</h3>
+<p>Considerando o mesmo preditor, podemos estar interessados em testar mais de um parâmetro ao mesmo tempo, por exemplo:</p>
+<p><span class="math display">\[H_0: 
+\begin{pmatrix}
+\beta_1 \\ 
+\beta_2 \\ 
+\beta_3
+\end{pmatrix} 
+= 
+\begin{pmatrix}
+0 \\ 
+0 \\ 
+0
+\end{pmatrix}
+\ vs \ 
+H_1: 
+\begin{pmatrix}
+\beta_1 \\ 
+\beta_2 \\ 
+\beta_3
+\end{pmatrix} 
+\neq
+\begin{pmatrix}
+0 \\ 
+0 \\ 
+0
+\end{pmatrix}.\]</span></p>
+<p>Neste caso, teríamos interesse em verificar se, simultâneamente, os parâmetros <span class="math inline">\(\beta_1\)</span>, <span class="math inline">\(\beta_2\)</span> e <span class="math inline">\(\beta_3\)</span> são iguais a 0.</p>
+<hr />
+<p>Esta mesma hipótese, para múltiplos parâmetros, na notação genérica <span class="math inline">\(\boldsymbol{L\beta} = \boldsymbol{c}\)</span>, fica da seguinte forma:</p>
+<p><span class="math display">\[H_0: \boldsymbol{L\beta} = \boldsymbol{c} \ vs \ H_1: \boldsymbol{L\beta} \neq \boldsymbol{c}.\]</span></p>
+<p>Em que:</p>
+<ul>
+<li><p><span class="math inline">\(\boldsymbol{L}\)</span> = <span class="math inline">\(\begin{bmatrix} 0 &amp; 1 &amp; 0 &amp; 0\\ 0 &amp; 0 &amp; 1 &amp; 0\\ 0 &amp; 0 &amp; 0 &amp; 1\end{bmatrix}\)</span>, é uma matriz 3x4 (estamos testando 3 parâmetros e possuímos 4 ao todo).</p></li>
+<li><p><span class="math inline">\(\boldsymbol{\beta}\)</span> = <span class="math inline">\(\begin{bmatrix} \beta_0\\ \beta_1\\ \beta_2\\ \beta_3 \end{bmatrix}\)</span>, é um vetor 4x1.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{c}\)</span> = <span class="math inline">\(\begin{bmatrix} 0\\ 0\\ 0 \end{bmatrix}\)</span>, é um vetor 3x1.</p></li>
+</ul>
+<p>Note que as dimensões são compatíveis e o resultado do produto é o mesmo que o da notação <span class="math inline">\(\boldsymbol{\beta} = \boldsymbol{\beta^*}\)</span>.</p>
+<hr />
+</div>
+</div>
+<div id="observacao" class="section level2">
+<h2>Observação</h2>
+<p>Em geral, ao realizar este tipo de teste há interesse em confrontar o valor dos parâmetros estimados com 0, isto é, não é incomum utilizar vetores nulos como <span class="math inline">\(\boldsymbol{\beta^*}\)</span> ou <span class="math inline">\(\boldsymbol{c}\)</span>. Pois desse modo podemos testar se existe evidência para afirmar que o parâmetro estimado é estatisticamente igual a 0. E caso haja evidência de que o parâmetro seja igual a 0, significa que ele não é relevante no modelo, ou seja, não tem efeito significativo.</p>
+<hr />
+<p>Contudo podemos realizar testes com quaisquer outros valores, por exemplo:</p>
+<p><span class="math display">\[H_0: \beta_1 = 2 \ vs \ H_1: \beta_1 \neq 2.\]</span></p>
+<p>Ou, para múltiplos parâmetros simultaneamente:</p>
+<p><span class="math display">\[H_0: 
+\begin{pmatrix}
+\beta_1 \\ 
+\beta_2 \\ 
+\beta_3
+\end{pmatrix} 
+= 
+\begin{pmatrix}
+2 \\ 
+5 \\ 
+8
+\end{pmatrix}
+\ vs \ 
+H_1: 
+\begin{pmatrix}
+\beta_1 \\ 
+\beta_2 \\ 
+\beta_3
+\end{pmatrix} 
+\neq
+\begin{pmatrix}
+2 \\ 
+5 \\ 
+8
+\end{pmatrix}.\]</span></p>
+<hr />
+<p>Além disso, existem outros testes para verificar tais tipos de hipótese. Os mais famosos são o Teste da Razão de Verossimilhanças e o Teste Escore.</p>
+<p>Contudo o teste Wald é famoso pela sua simplicidade pois baseia-se na distribuição assintótica Normal dos estimadores dos parâmetros do modelo e para sua execução necessitamos apenas da estimativa do parâmetro e seu erro padrão (raiz da variância), geralmente obtido pela matriz de variâncias e covariâncias dos parâmetros do modelo.</p>
+<hr />
+</div>
+</div>
+<div id="teste-wald-para-um-unico-parametro" class="section level1">
+<h1>Teste Wald para um único parâmetro</h1>
+<p>Seja <span class="math inline">\(\beta_j\)</span> um parâmetro qualquer de um modelo de regressão e <span class="math inline">\(\hat\beta_j\)</span> a estimativa deste parâmetro, sabemos que <span class="math inline">\(\hat\beta_j\)</span> segue distribuição Normal com média <span class="math inline">\(\beta_j\)</span> e variância dada pelo correspondente termo da diagonal da matriz de variâncias e covariâncias, isto é:</p>
+<p><span class="math display">\[\hat\beta_j \sim Normal(\beta_j, Var(\hat\beta_j)).\]</span></p>
+<p>Neste cenário, a hipótese a ser testada para um único parâmetro, fica da seguinte forma:</p>
+<p><span class="math display">\[H_0: \beta_j = \beta_j^* \\H_1: \beta_j \neq \beta_j^*\]</span></p>
+<p>A estatística de teste do tipo Wald para verificar a hipótese é dada por:</p>
+<p><span class="math display">\[W = \frac{(\hat\beta_j - \beta_j^*)^2}{Var(\hat\beta_j)}.\]</span></p>
+<p>A estatística <span class="math inline">\(W\)</span> segue distribuição assintótica Qui-quadrado com 1 grau de liberdade (<span class="math inline">\(\chi^2_1\)</span>). Outra versão comum utilizada é a raiz quadrada da estatística original, dada por:</p>
+<p><span class="math display">\[\sqrt{W} = \frac{\hat\beta_j - \beta_j^*}{ep(\hat\beta_j)}.\]</span></p>
+<p>Neste caso, a estatística de teste segue distribuição assintótica Normal Padrão (média 0 e desvio padrão 1).</p>
+<hr />
+</div>
+<div id="teste-wald-para-multiplos-parametros" class="section level1">
+<h1>Teste Wald para múltiplos parâmetros</h1>
+<p>Sabemos que, a estimativa de qualquer parâmetro do modelo segue distribuição Normal em que a média é dada pelo valor verdadeiro do parâmetro e a variância é dada pela variância da estimativa.</p>
+<p>Para testar a hipótese de que diversos parâmetros são, ao mesmo tempo, iguais a um vetor de valores postulados, é mais conveniente utilizar a notação <span class="math inline">\(\boldsymbol{L\beta} = \boldsymbol{c}\)</span>. Deste modo, as hipóteses são dadas por:</p>
+<p><span class="math display">\[H_0: \boldsymbol{L\beta} = \boldsymbol{c} \\H_1: \boldsymbol{L\beta} \neq \boldsymbol{c}\]</span></p>
+<p>A generalização da estatística de teste para verificar a validade desta hipótese é dada por:</p>
+<p><span class="math display">\[W = (\boldsymbol{L\hat\beta} - \boldsymbol{c})^T \ (\boldsymbol{L \ vcov(\hat\beta) \ L^T})^{-1} \ (\boldsymbol{L\hat\beta} - \boldsymbol{c}).\]</span></p>
+<p>Em que <span class="math inline">\(\boldsymbol{L}\)</span> é a mesma matriz que especifica as hipóteses testadas na notação alternativa <span class="math inline">\(\boldsymbol{L\beta} = \boldsymbol{c}\)</span>, tem dimensão <span class="math inline">\(s \times k\)</span> e define quais parâmetros estão sendo testados. <span class="math inline">\(\boldsymbol{\hat\beta}\)</span> é o vetor de dimensão <span class="math inline">\(k \times 1\)</span> com todos os parâmetros de regressão do modelo. <span class="math inline">\(\boldsymbol{c}\)</span> é um vetor de dimensão <span class="math inline">\(s \times 1\)</span> com os valores sob hipótese nula. E <span class="math inline">\(\boldsymbol{vcov(\hat\beta)}\)</span> é a matriz de variâncias e covariâncias das estimativas dos parâmetros, de dimensão <span class="math inline">\(k \times k\)</span>.</p>
+<p>É simples verificar que todas as matrizes são compatíveis e, especificando corretamente a matriz <span class="math inline">\(\boldsymbol{L}\)</span>, é possível testar também hipóteses sobre parâmetros individuais.</p>
+<p>Independente do número de parâmetros testados, a estatística de teste <span class="math inline">\(W\)</span> é um único valor que segue assintóticamente distribuição <span class="math inline">\(\chi^2\)</span>. Quanto aos graus de liberdade, existem duas possibilidades: a primeira é considerar como graus de liberdade o número de parâmetros testados, isto é, o número de linhas da matriz <span class="math inline">\(\boldsymbol{L}\)</span>, denotado por <span class="math inline">\(s\)</span>. A segunda possibilidade é utilizar a diferença entre o tamanho amostral e o número de parâmetros do modelo, ou seja, <span class="math inline">\(N-k\)</span>.</p>
+<hr />
+<center>
+<table>
+<tr>
+<td>
+<img src="img/dsbd.png" alt="Drawing" style="width: 250px;"/>
+</td>
+<td>
+           
+</td>
+<td>
+<img src="img/ufpr.jpg" alt="Drawing" style="width: 200px;"/>
+</td>
+<td>
+           
+</td>
+</center>
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;">
+
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

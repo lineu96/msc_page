@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>3_anova.utf8.md</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="0_intro.html">
+    <span class="fa fa-commenting-o"></span>
+     
+    Introdução
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Metodologia
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1_mcglm.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        McGLM
+      </a>
+    </li>
+    <li>
+      <a href="2_wald_test.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        Teste Wald
+      </a>
+    </li>
+    <li>
+      <a href="3_anova.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        ANOVA
+      </a>
+    </li>
+    <li>
+      <a href="4_mc_manova_wald.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        Wald MANOVA
+      </a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="5_simula.html">
+    <span class="fa fa-code"></span>
+     
+    Estudos de simulação
+  </a>
+</li>
+<li>
+  <a href="6_aplica.html">
+    <span class="fa fa-bar-chart"></span>
+     
+    Estudos de caso
+  </a>
+</li>
+<li>
+  <a href="7_conclusao.html">
+    <span class="fa fa-file-text"></span>
+     
+    Considerações finais
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://lineu96.github.io/st/">
+    <span class="fa fa-user"></span>
+     
+    Lineu A.C.F
+  </a>
+</li>
+<li>
+  <a href="https://github.com/lineu96">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<style type="text/css">
+table.header {
+    margin-top: 10px;
+    border-collapse: unset;
+}
+table.header > tbody {
+    border-bottom: 0px;
+    border-top: 0px;
+}
+</style>
+
+<table class="header" width="100%" align="center">
+  <tr>
+    <td align="left" valign="bottom" width="90px">
+      <a href="link.com">
+        <img src="img/mcglm.png" width="100%" />
+      </a>
+    </td>
+    <td align="left" valign="center">
+      <div class="header">
+        <h4 style="font-size: 20px; margin: 10px auto 0 10px">
+          Testes de hipótese em Modelos Multivariados de Covariância Linear Generalizada (McGLM)
+        </h4>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<hr />
+<center>
+<font size="6">
+<p align=”center”>
+<b> Análise de Variância </b>
+</center>
+</font>
+</center>
+<hr />
+<font size="4">
+<p align=”center”>
+<a href="https://lineu96.github.io/st/">Lineu Alberto Cavazani de Freitas</a>
+</center>
+<p></font></p>
+<hr />
+<div id="introducao" class="section level1">
+<h1>Introdução</h1>
+<p>O procedimento conhecido como Análise Variância (ANOVA) consiste em efetuar testes sucessivos impondo restrições ao modelo originalmente ajustado em que a cada passo são incluídas ou excluídas determinadas variáveis a fim de testar se a ausência de determinada variável gera perda ao modelo. Normalmente os resultados destes sucessivos testes são sumarizados numa tabela que contêm a variável, o valor de uma estatística de teste, os graus de liberdade e um p-valor referente à hipótese; o chamado quadro de Análise de Variância.</p>
+<p>Cuidados devem ser tomados com este tipo de análise no que diz respeito à forma como o quadro foi elaborado, pois cada linha do quadro refere-se a uma hipótese e estas hipóteses podem ser elaboradas de formas distintas. Formas conhecidas de se elaborar o quadro são as chamadas ANOVAs do tipo I, II e III. Esta nomenclatura vem do software estatístico SAS, contudo não se trata de uma definição consolidada e as implementações destes tipos distintos de Análise de Variância não necessariamente correspondem precisamente ao que está implementado no SAS. Recomenda-se ao usuário estar seguro de qual tipo de análise está sendo utilizada pois, caso contrário, interpretações equivocadas podem ser tomadas.</p>
+<p>Neste material serão tratados os seguintes assuntos:</p>
+<ul>
+<li><p>Análise de Variância: o que é, análises do tipo I, II e III.</p></li>
+<li><p>Análises de Variância via teste Wald: procedimento para obtenção de um quadro de Análise de Variância obtido por sucessivos testes do tipo Wald.</p></li>
+</ul>
+<hr />
+<p>Para fins de ilustração dos testes feitos por cada tipo de Análise de Variância, considere um modelo qualquer com preditor dado por:</p>
+<p><span class="math display">\[g(\mu) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1x_2.\]</span></p>
+<p>Temos deste modo um intercepto, denotado por <span class="math inline">\(\beta_0\)</span> e três parâmetros de regressão denotados por <span class="math inline">\(\beta_1\)</span>, <span class="math inline">\(\beta_2\)</span> e <span class="math inline">\(\beta_3\)</span>, em que <span class="math inline">\(\beta_3\)</span> representa o efeito da interação entre as variáveis <span class="math inline">\(x_1\)</span> e <span class="math inline">\(x_2\)</span>.</p>
+<hr />
+</div>
+<div id="anova-tipo-i" class="section level1">
+<h1>ANOVA tipo I</h1>
+<p>A Análise de Variância do tipo I é também chamada de Análise de Variância sequencial. Neste cenário, uma Análise de Variância sequencial faria os seguintes testes:</p>
+<ol style="list-style-type: decimal">
+<li>Modelo apenas com <span class="math inline">\(x1\)</span> vs modelo nulo.</li>
+<li>Modelo com <span class="math inline">\(x1\)</span> e <span class="math inline">\(x2\)</span> vs modelo com <span class="math inline">\(x_1\)</span>.</li>
+<li>Modelo com <span class="math inline">\(x1\)</span>, <span class="math inline">\(x2\)</span> e interação vs modelo com <span class="math inline">\(x_1\)</span> e <span class="math inline">\(x_2\)</span>.</li>
+</ol>
+<p>Cada um destes testes seria uma linha do quadro de Análise de Variância, e recebe o nome de sequencial pois a cada linha é acrescentada uma variável e o modelo é confrontado com o modelo da linha anterior.</p>
+<p>Em geral, justamente por esta sequencialidade, se torna difícil interpretar os efeitos das variáveis pela Análise de Variância do tipo I. Em contrapartida, as análises do tipo II e III testam hipóteses que são, geralmente de maior interesse ao usuário.</p>
+<hr />
+</div>
+<div id="anova-tipo-ii" class="section level1">
+<h1>ANOVA tipo II</h1>
+<p>A Análise de Variância do tipo II efetua testes similares ao último teste da Análise de Variância sequencial. Em um modelo sem interação o que é feito é, em cada linha, testar o modelo completo contra o modelo sem uma variável. Deste modo se torna melhor interpretável o efeito daquela variável sobre o modelo completo.</p>
+<p>Caso haja interações no modelo, é testado o modelo completo contra o modelo sem o efeito fixo e qualquer efeito de interação que envolva a variável. Considerando o preditor exemplo, a Análise de Variância do tipo II faria os seguintes testes:</p>
+<ol style="list-style-type: decimal">
+<li>Modelo com <span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span> e interação vs modelo sem <span class="math inline">\(x1\)</span> e interação. Retira-se a interação pois nela há <span class="math inline">\(x_1\)</span>.</li>
+<li>Modelo com <span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span> e interação vs modelo sem <span class="math inline">\(x2\)</span> e interação. Do mesmo modo que no primeiro teste retira-se a interação pois nela há <span class="math inline">\(x_2\)</span>.</li>
+<li>Modelo com <span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span> e interação vs modelo sem a interação.</li>
+</ol>
+<p>Note que nas linhas em que se busca entender o efeito de <span class="math inline">\(x_1\)</span> e <span class="math inline">\(x2\)</span> também a interação é excluída, pois retira-se do modelo todos os parâmetros que envolvem aquela variável.</p>
+<hr />
+</div>
+<div id="anova-tipo-iii" class="section level1">
+<h1>ANOVA tipo III</h1>
+<p>A Análise de Variância do tipo III funciona do mesmo modo que uma Análise de Variância do tipo II sem interações. Na Análise de Variância do tipo II são feitos testes comparando o modelo completo contra o modelo sem todos os parâmetros que envolvem determinada variável (sejam efeitos fixos ou interações). Já a Análise de Variância do tipo III considera o modelo completo contra o modelo sem determinada variável, seja ela efeito fixo ou de interação. Deste modo, cuidados devem ser tomados nas conclusões pois uma variável não ter efeito constatado como efeito fixo não quer dizer que não haverá efeito de interação.</p>
+<p>Considerando o preditor exemplo, a Análise de Variância do tipo III faria os seguintes testes:</p>
+<ol style="list-style-type: decimal">
+<li>Modelo com <span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span> e interação vs modelo sem <span class="math inline">\(x1\)</span>.</li>
+<li>Modelo com <span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span> e interação vs modelo sem <span class="math inline">\(x2\)</span>.</li>
+<li>Modelo com <span class="math inline">\(x1\)</span>, <span class="math inline">\(x2\)</span> e interação vs modelo sem a interação.</li>
+</ol>
+<p>Note que nas linhas em que se testa o efeito de <span class="math inline">\(x_1\)</span> e <span class="math inline">\(x_2\)</span> mantém-se o efeito da interação, diferentemente do que é feito na Análise de Variância do tipo II.</p>
+<p>Podemos entender que a Análise de Variância do tipo II prioriza efeitos fixos e testa por último as interações. Já a Análise de Variância do tipo III considera todos os parâmetros com mesma importância, sejam eles efeitos fixos ou de interação.</p>
+<p>Por fim, podemos notar que as Análises de Variância do tipo II e III geram os mesmos resultados quando aplicadas a modelos sem efeitos de interação.</p>
+<hr />
+</div>
+<div id="analise-de-variancia-via-teste-wald" class="section level1">
+<h1>Análise de Variância via teste Wald</h1>
+<p>Considerando o que foi apresentado, podemos notar que as Análises de Variância são sucessivos testes de hipótese que verificam a nulidade de determinados parâmetros. Isto geralmente é feito através de uma sequência de testes de Razão de Verossimilhança em que, no caso do tipo I, os termos do preditor linear são acrescentados sucessivamente ao modelo, começando pelo modelo nulo.</p>
+<p>Para as análises do tipo II e III é simples visualizar como gerar os quadros de Análise de Variância utilizando o teste Wald. Pois sempre estarão sendo comparados o modelo completo e o modelo sem determinada ou determinadas variáveis. Ou seja, basta então, para cada linha do quadro de Análise de Variância, especificar corretamente uma matriz <span class="math inline">\(\boldsymbol{L}\)</span> que represente de forma adequada a hipótese a ser testada, seja para realizar o teste sobre um único parâmetro ou para múltiplos.</p>
+<p>Para ilustração das hipóteses que seriam testadas via teste Wald em cada linha do quadro de Análise de Variância nos tipos II e III e a construção dos elementos necessários para realização do teste (matriz <span class="math inline">\(\boldsymbol{L}\)</span>, vetor <span class="math inline">\(\boldsymbol{\beta}\)</span> e vetor <span class="math inline">\(\boldsymbol{c}\)</span>), considere um modelo qualquer com preditor dado por:</p>
+<p><span class="math display">\[g(\mu) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \beta_4 x_1 x_2.\]</span></p>
+<p>Temos deste modo um intercepto, denotado por <span class="math inline">\(\beta_0\)</span> e quatro parâmetros de regressão denotados por <span class="math inline">\(\beta_1\)</span>, <span class="math inline">\(\beta_2\)</span> e <span class="math inline">\(\beta_3\)</span> e <span class="math inline">\(\beta_4\)</span>, em que <span class="math inline">\(\beta_4\)</span> representa o efeito da interação entre as variáveis <span class="math inline">\(x_1\)</span> e <span class="math inline">\(x_2\)</span>.</p>
+<hr />
+<div id="anova-tipo-ii-via-teste-wald" class="section level2">
+<h2>ANOVA Tipo II, via teste Wald</h2>
+<p>No caso do tipo II, testaríamos as seguintes hipóteses:</p>
+<p>Na primeira linha, referente a <span class="math inline">\(x_1\)</span>, testaríamos o modelo completo contra o modelo sem todos os parâmetros que possuem <span class="math inline">\(x_1\)</span>, sejam fixos ou interações, portanto:</p>
+<p><span class="math display">\[H_0: 
+\begin{pmatrix}
+\beta_1 \\ 
+\beta_4
+\end{pmatrix} 
+= 
+\begin{pmatrix}
+0 \\ 
+0
+\end{pmatrix}
+\ vs \ 
+H_1: 
+\begin{pmatrix}
+\beta_1 \\ 
+\beta_4
+\end{pmatrix} 
+\neq
+\begin{pmatrix}
+0 \\ 
+0
+\end{pmatrix}.\]</span></p>
+<p>Esta hipótese pode ser escrita na notação <span class="math inline">\(\boldsymbol{L\beta} = \boldsymbol{c}\)</span>:</p>
+<p><span class="math display">\[H_0: \boldsymbol{L}\boldsymbol{\beta} = \boldsymbol{c} \ vs \ H_1: \boldsymbol{L}\boldsymbol{\beta} \neq \boldsymbol{c}.\]</span> Em que:</p>
+<p><span class="math display">\[\boldsymbol{L} = \begin{bmatrix}
+0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\ 
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 1
+\end{bmatrix}, \boldsymbol{\beta} = \begin{bmatrix} \beta_0\\  \beta_1\\  \beta_2\\  \beta_3\\  \beta_4  \end{bmatrix}, \boldsymbol{c} = \begin{bmatrix} 0\\  0\end{bmatrix}.\]</span></p>
+<p>Note que ambas as notações chegam à mesma hipótese.</p>
+<p>Tal como a variável <span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span> está associado a um efeito de interação, portanto ambos efeitos (fixo e interação) são testados. A segunda linha do quadro, referente a <span class="math inline">\(x_2\)</span>, testaria as hipóteses:</p>
+<p><span class="math display">\[H_0: 
+\begin{pmatrix}
+\beta_2 \\ 
+\beta_4
+\end{pmatrix} 
+= 
+\begin{pmatrix}
+0 \\ 
+0
+\end{pmatrix}
+\ vs \ 
+H_1: 
+\begin{pmatrix}
+\beta_2 \\ 
+\beta_4
+\end{pmatrix} 
+\neq
+\begin{pmatrix}
+0 \\ 
+0
+\end{pmatrix}.\]</span></p>
+<p>Neste caso, os elementos na notação <span class="math inline">\(\boldsymbol{L\beta} = \boldsymbol{c}\)</span> são:</p>
+<p><span class="math display">\[\boldsymbol{L} = \begin{bmatrix}
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\ 
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 1
+\end{bmatrix}, \boldsymbol{\beta} = \begin{bmatrix} \beta_0\\  \beta_1\\  \beta_2\\  \beta_3\\  \beta_4  \end{bmatrix}, \boldsymbol{c} = \begin{bmatrix} 0\\  0\end{bmatrix}.\]</span></p>
+<p>A terceira linha do quadro testaria uma única hipótese, pois o parâmetro <span class="math inline">\(x_3\)</span> não está associado a nenhum outro efeito:</p>
+<p><span class="math display">\[H_0: \beta_3 = 0 \ vs \ H_1: \beta_3 \neq 0.\]</span></p>
+<p>Portanto, a matriz <span class="math inline">\(\boldsymbol{L}\)</span> da notação <span class="math inline">\(\boldsymbol{L\beta} = \boldsymbol{c}\)</span> é um vetor, pois apenas um parâmetro é testado:</p>
+<p><span class="math display">\[\boldsymbol{L} = \begin{bmatrix}
+0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\ 
+\end{bmatrix}, \boldsymbol{\beta} = \begin{bmatrix} \beta_0\\  \beta_1\\  \beta_2\\  \beta_3\\  \beta_4  \end{bmatrix}, \boldsymbol{c} = \begin{bmatrix} 0\\  \end{bmatrix}.\]</span></p>
+<p>Por fim, a última linha do quadro testaria o efeito da interação no modelo, ou seja:</p>
+<p><span class="math display">\[H_0: \beta_4 = 0 \ vs \ H_1: \beta_4 \neq 0.\]</span></p>
+<p>Novamente, por se tratar de um único parâmetro, a matriz <span class="math inline">\(\boldsymbol{L}\)</span> é um vetor:</p>
+<p><span class="math display">\[\boldsymbol{L} = \begin{bmatrix}
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \\ 
+\end{bmatrix}, \boldsymbol{\beta} = \begin{bmatrix} \beta_0\\  \beta_1\\  \beta_2\\  \beta_3\\  \beta_4  \end{bmatrix}, \boldsymbol{c} = \begin{bmatrix} 0\\  \end{bmatrix}.\]</span></p>
+<hr />
+</div>
+<div id="anova-tipo-iii-via-teste-wald" class="section level2">
+<h2>ANOVA Tipo III, via teste Wald</h2>
+<p>Como já mencionado, a Análise de Variância do tipo III não trata de forma distinta efeitos fixos de interações. Portanto, os testes em cada linha do quadro de Análise de Variância seriam:</p>
+<p>Na primeira linha, referente a <span class="math inline">\(x_1\)</span>, testaríamos o modelo completo contra o modelo sem <span class="math inline">\(x_1\)</span>. Note que, diferentemente da análise do tipo II mantém-se o parâmetro de interação, isto é, nada se supõe sobre ele:</p>
+<p><span class="math display">\[H_0: \beta_1 = 0 \ vs \ H_1: \beta_1 \neq 0.\]</span></p>
+<p>Ou seja:</p>
+<p><span class="math display">\[\boldsymbol{L} = \begin{bmatrix}
+0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\ 
+\end{bmatrix}, \boldsymbol{\beta} = \begin{bmatrix} \beta_0\\  \beta_1\\  \beta_2\\  \beta_3\\  \beta_4  \end{bmatrix}, \boldsymbol{c} = \begin{bmatrix} 0\\  \end{bmatrix}.\]</span></p>
+<p>Na segunda linha, referente a <span class="math inline">\(x_2\)</span>, testaríamos o modelo completo contra o modelo sem <span class="math inline">\(x_2\)</span>. Tal como para <span class="math inline">\(x_1\)</span>, na análise do tipo III nada se supõe quanto ao parâmetro de interação, por mais que lá haja <span class="math inline">\(x_2\)</span>:</p>
+<p><span class="math display">\[H_0: \beta_2 = 0 \ vs \ H_1: \beta_2 \neq 0.\]</span></p>
+<p>Deste modo</p>
+<p><span class="math display">\[\boldsymbol{L} = \begin{bmatrix}
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\ 
+\end{bmatrix}, \boldsymbol{\beta} = \begin{bmatrix} \beta_0\\  \beta_1\\  \beta_2\\  \beta_3\\  \beta_4  \end{bmatrix}, \boldsymbol{c} = \begin{bmatrix} 0\\  \end{bmatrix}.\]</span></p>
+<p>O mesmo para a terceira linha:</p>
+<p><span class="math display">\[H_0: \beta_3 = 0 \ vs \ H_1: \beta_3 \neq 0.\]</span></p>
+<p>Em que:</p>
+<p><span class="math display">\[\boldsymbol{L} = \begin{bmatrix}
+0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\ 
+\end{bmatrix}, \boldsymbol{\beta} = \begin{bmatrix} \beta_0\\  \beta_1\\  \beta_2\\  \beta_3\\  \beta_4  \end{bmatrix}, \boldsymbol{c} = \begin{bmatrix} 0\\  \end{bmatrix}.\]</span></p>
+<p>Por fim, a última linha do quadro testaria o efeito da interação no modelo, ou seja, testa o modelo completo contra o modelo sem interação:</p>
+<p><span class="math display">\[H_0: \beta_4 = 0 \ vs \ H_1: \beta_4 \neq 0.\]</span></p>
+<p>E os elementos para obtenção da última estatística de teste são:</p>
+<p><span class="math display">\[\boldsymbol{L} = \begin{bmatrix}
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \\ 
+\end{bmatrix}, \boldsymbol{\beta} = \begin{bmatrix} \beta_0\\  \beta_1\\  \beta_2\\  \beta_3\\  \beta_4  \end{bmatrix}, \boldsymbol{c} = \begin{bmatrix} 0\\  \end{bmatrix}.\]</span></p>
+<hr />
+<p>Para obtenção das demais quantidades necessárias para construção do quadro de Análise de Variância basta seguir o procedimento pelo qual se faz o teste Wald. Os graus de liberdade são iguais ao número de parâmetros testados, isto é, o número de linhas da matriz <span class="math inline">\(\boldsymbol{L}\)</span> e o p-valor é obtido comparando o valor da estatística de teste <span class="math inline">\(W\)</span> com a distribuição <span class="math inline">\(\chi^2\)</span>.</p>
+<hr />
+<p>No caso de variáveis categóricas, são estimados o número de categorias menos um parâmetros. Neste caso, para a Análise de Variância, todos os parâmetros referentes à variável categória devem ter sua nulidade verificada.</p>
+<hr />
+<center>
+<table>
+<tr>
+<td>
+<img src="img/dsbd.png" alt="Drawing" style="width: 250px;"/>
+</td>
+<td>
+           
+</td>
+<td>
+<img src="img/ufpr.jpg" alt="Drawing" style="width: 200px;"/>
+</td>
+<td>
+           
+</td>
+</center>
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;">
+
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+name: "my-website"
+
+output_dir: "."
+
+navbar:
+
+  title: ""
+
+
+  left:
+    - text: "Home"
+      icon: fa-home
+      href: index.html
+
+    - text: "Introdução"
+      icon: fa-commenting-o 
+      href: 0_intro.html
+
+    - text: "Metodologia"
+      icon: fa-book
+      menu:
+
+        - text: "McGLM"
+          icon: fa-chevron-right
+          href: 1_mcglm.html
+
+        - text: "Teste Wald"
+          icon: fa-chevron-right
+          href: 2_wald_test.html
+      
+        - text: "ANOVA"
+          icon: fa-chevron-right
+          href: 3_anova.html
+
+        - text: "Wald MANOVA"
+          icon: fa-chevron-right
+          href: 4_mc_manova_wald.html     
+
+    - text: "Estudos de simulação"
+      icon: fa-code
+      href: 5_simula.html
+
+    - text: "Estudos de caso"
+      icon: fa-bar-chart
+      href: 6_aplica.html
+
+    - text: "Considerações finais"
+      icon: fa-file-text
+      href: 7_conclusao.html
+
+  
+  right:
+    - text: "Lineu A.C.F"
+      icon: fa-user 
+      href: https://lineu96.github.io/st/
+      
+    - icon: fa-github 
+      href: https://github.com/lineu96
+
+        
+output:
+  html_document:
+    theme: flatly
+    highlight: textmate
+    #include:
+    #  after_body: footer.html
+    #css: styles.css
+
+    # THEMES
+    # default, cerulean, journal, 
+    # flatly, darkly, readable, 
+    # spacelab, united, cosmo, 
+    # lumen, paper, sandstone, 
+    # simplex, and yeti
+    includes:
+      
+      before_body: header.html
+      

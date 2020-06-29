@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>0_intro.utf8.md</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="0_intro.html">
+    <span class="fa fa-commenting-o"></span>
+     
+    Introdução
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Metodologia
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1_mcglm.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        McGLM
+      </a>
+    </li>
+    <li>
+      <a href="2_wald_test.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        Teste Wald
+      </a>
+    </li>
+    <li>
+      <a href="3_anova.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        ANOVA
+      </a>
+    </li>
+    <li>
+      <a href="4_mc_manova_wald.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        Wald MANOVA
+      </a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="5_simula.html">
+    <span class="fa fa-code"></span>
+     
+    Estudos de simulação
+  </a>
+</li>
+<li>
+  <a href="6_aplica.html">
+    <span class="fa fa-bar-chart"></span>
+     
+    Estudos de caso
+  </a>
+</li>
+<li>
+  <a href="7_conclusao.html">
+    <span class="fa fa-file-text"></span>
+     
+    Considerações finais
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://lineu96.github.io/st/">
+    <span class="fa fa-user"></span>
+     
+    Lineu A.C.F
+  </a>
+</li>
+<li>
+  <a href="https://github.com/lineu96">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<style type="text/css">
+table.header {
+    margin-top: 10px;
+    border-collapse: unset;
+}
+table.header > tbody {
+    border-bottom: 0px;
+    border-top: 0px;
+}
+</style>
+
+<table class="header" width="100%" align="center">
+  <tr>
+    <td align="left" valign="bottom" width="90px">
+      <a href="link.com">
+        <img src="img/mcglm.png" width="100%" />
+      </a>
+    </td>
+    <td align="left" valign="center">
+      <div class="header">
+        <h4 style="font-size: 20px; margin: 10px auto 0 10px">
+          Testes de hipótese em Modelos Multivariados de Covariância Linear Generalizada (McGLM)
+        </h4>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<hr />
+<center>
+<font size="6">
+<p align=”center”>
+<b> Introdução </b>
+</center>
+</font>
+</center>
+<hr />
+<font size="4">
+<p align=”center”>
+<a href="https://lineu96.github.io/st/">Lineu Alberto Cavazani de Freitas</a>
+</center>
+<p></font></p>
+<hr />
+<div id="ciencia-de-dados" class="section level1">
+<h1>Ciência de dados</h1>
+<p>Podemos entender como Data Science ou Ciência de Dados o estudo sistemático de conjuntos de dados com o objetivo de gerar conhecimento sobre determinado assunto para auxiliar na tomada de decisão. Em suma, o objetivo da Ciência de Dados é extrair informação dos dados e seu processo é caracterizado por etapas como a definição do problema, planejamento do estudo, coleta e análise dos dados e, por fim, a interpretação dos resultados.</p>
+<p>Trata-se de um campo de estudo extremamente interdisciplinar que envolve técnicas de áreas como Estatística, Ciência da Computação e Matemática. É uma área bastante abrangente e que vem ganhando destaque nos últimos anos devido a fatores tais como a popularização de grandes bancos de dados e também de técnicas modernas de análise. Portanto, as técnicas ditas pertencentes ao rol de Ciência de Dados visam entender e analisar fenômenos reais a partir de dados, e deste modo auxiliar no processo de tomada de decisão embasada nas conclusões gerais que podem ser tiradas da amostra.</p>
+<p>Campos de interesse na Ciência de Dados são: métodos de amostragem, mineração de dados, bancos de dados, técnicas de análise exploratória como visualização, técnicas de amostragem, probabilidade, inferência, otimização, infraestrutura computacional, plataformas de Big Data, modelos estatísticos, dentre outros.</p>
+<p>No contexto de modelos estatísticos, também chamados de modelos de regressão, existem diversas técnicas de modelagem, tais como: modelos lineares, lineares generalizados, aditivos generalizados, de efeitos aleatórios, aditivos generalizados para locação, escala e forma e ainda os multivariados.</p>
+<hr />
+</div>
+<div id="modelos-de-regressao" class="section level1">
+<h1>Modelos de regressão</h1>
+<p>Os modelos de regressão são indicados a problemas nos quais temos interesse em verificar a associação entre uma variável resposta e um conjunto de variáveis explicativas e/ou utilizar o modelo para realizar predições para uma população.</p>
+<p>Nos casos univariados mais gerais, estes modelos associam uma única variável resposta, também chamada de variável dependente, a uma ou mais variáveis explicativas, conhecidas como variáveis independentes. De forma geral, um modelo de regressão é uma expressão matemática que relaciona a média da variável resposta às variáveis preditoras (covariáveis), em que a variável resposta segue uma distribuição de probabilidade condicional às covariáveis e a média é descrita por um preditor linear. O caso mais conhecido é o modelo linear normal, em que um dos pressupostos do modelo é de que a variável resposta, condicional às variáveis explicativas, siga distribuição Normal.</p>
+<p>Todavia, não são raras as situações em que a suposição de normalidade não seja atendida. Uma alternativa por muito tempo adotada foi buscar uma transformação da variável resposta a fim de atender os pressupostos do modelo, tal como a família de transformações Box-Cox <span class="citation">(Box and Cox 1964)</span>. Contudo, este tipo de solução leva a dificuldades na interpretação dos resultados.</p>
+<p>Neste contexto, a proposta de maior renome para contornar tais restrições foi apresentada por <span class="citation">Nelder and Wedderburn (1972)</span>, que introduz os Modelos Lineares Generalizados (GLM). Essa classe de modelos permitiu a flexibilização da distribuição da variável resposta de tal modo que esta pertença à família exponencial de distribuições. Em meio aos casos especiais de distribuições possíveis nesta classe de modelos estão a Bernoulli, Binomial, Poisson, Normal, Gama, Normal inversa, entre outras. Trata-se portanto, de uma classe de modelos de regressão univariados para dados de diferentes naturezas, tais como: dados contínuos simétricos e assimétricos, contagens, proporções, assim por diante. Tais características tornam esta classe uma flexível ferramenta de modelagem aplicável a diversos tipos de problema.</p>
+<p>Embora as técnicas citadas sejam úteis, há casos em que são coletadas mais de uma resposta por unidade experimental e há o interesse de modelá-las em função de um conjunto de variáveis explicativas. Para problemas com essa estrutura, uma alternativa são os modelos lineares multivariados, nos quais associa-se um conjunto de respostas a uma ou mais covariáveis e, além disso, as variáveis respostas seguem distribuição Normal multivariada. Porém, por maior que seja seu potencial de aplicação, essa classe apresenta limitações como a necessidade de normalidade multivariada, homogeneidade das matrizes de variâncias e covariâncias, além de independência entre as observações.</p>
+<p>Uma alternativa para solucionar tais limitações são os Modelos Multivariados de Covariância Linear Generalizada (McGLM), prospostos por <span class="citation">Bonat and Jørgensen (2016)</span>. Essa classe permite lidar com múltiplas respostas de diferentes naturezas e, de alguma forma, correlacionadas. Além disso, não há nesta classe suposições quanto à independência entre as observações da amostra, pois a correlação entre observações pode ser modelada por um preditor linear matricial que envolve matrizes conhecidas.</p>
+<p>De forma geral, o McGLM é uma estrutura para modelagem de múltiplas respostas, de diferentes naturezas, em que não há necessidade de observações independentes. Estas características tornam o McGLM uma classe flexível ao ponto de ser possível chegar a extensões multivariadas para modelos de medidas repetidas, séries temporais, dados longitudinais, espaciais e espaço-temporais.</p>
+<hr />
+</div>
+<div id="testes-de-hipotese" class="section level1">
+<h1>Testes de hipótese</h1>
+<p>Quando trabalhamos com modelos de regressão univariados, por diversas vezes há o interesse em avaliar os parâmetros do modelo. Isto é, verificar se os valores que associam as variáveis resposta às variáveis explicativas são iguais a determinados valores de interesse. Isto é feito através dos chamados testes de hipótese. Em geral, existe o interesse em avaliar se há evidência suficiente para afirmar que o parâmetro que associa a variável explicativa à variável resposta é igual a 0, pois, caso esta afirmação seja verdadeira, podemos concluir que a variável explicativa não está associada à variável resposta. Contudo, através dos testes de hipótese podemos avaliar outros valores diferentes de 0.</p>
+<p>Existem ainda técnicas como a Análise de Variância (ANOVA), na qual o objetivo é analisar o efeito de cada uma das variáveis explicativas, isto é, avaliar se a retirada de cada variável gera perda ao modelo ajustado. Em outras palavras, na Análise de Variância realizamos sucessivos testes de hipótese para verificar se o parâmetro que associa a variável explicativa à variável resposta é igual a 0.</p>
+<p>Quando se está na classe de modelos multivariados para dados gaussianos, extende-se o conceito de Análise de Variância (ANOVA) para a Análise de Variância Multivariada (MANOVA) <span class="citation">(Smith, Gnanadesikan, and Hughes 1962)</span> e dentre os testes de hipótese multivariados já discutidos na literatura, destacam-se o <span class="math inline">\(\lambda\)</span> de Wilk’s <span class="citation">(Wilks 1932)</span>, traço de Hotelling-Lawley <span class="citation">(Lawley 1938; Hotelling 1951)</span>, traço de Pillai <span class="citation">(Pillai and others 1955)</span> e maior raiz de Roy <span class="citation">(Roy 1953)</span>.</p>
+<hr />
+</div>
+<div id="objetivos" class="section level1">
+<h1>Objetivos</h1>
+<p>No entanto, considerando o cenário com múltiplas respostas não gaussianas, são escassas as discussões na literatura a respeito de testes de hipótese sobre os parâmetros do modelo. Deste modo, nosso objetivo geral é o desenvolvimento destes testes de hipótese para os Modelos Multivariados de Covariância Linear Generalizada (McGLm) por se tratar de uma classe de modelos flexível e com alto poder de aplicação a problemas práticos em que se fazem necessários tais testes para avaliação do modelo.</p>
+<p>Portanto, nosso trabalho tem os seguintes objetivos específicos:</p>
+<ol style="list-style-type: decimal">
+<li><p>Propor e implementar testes de hipótese gerais para os Modelos Multivariados de Covariância Linear Generalizada.</p></li>
+<li><p>Implementar funções para efetuar Análises de Variância Multivariadas para os Modelos Multivariados de Covariância Linear Generalizada.</p></li>
+<li><p>Demonstrar as propriedades e comportamento dos testes propostos com base em estudos de simulação.</p></li>
+<li><p>Demonstrar o potencial de aplicação das metodologias discutidas com base na aplicação a conjuntos de dados reais.</p></li>
+</ol>
+<hr />
+<center>
+<table>
+<tr>
+<td>
+<img src="img/dsbd.png" alt="Drawing" style="width: 250px;"/>
+</td>
+<td>
+           
+</td>
+<td>
+<img src="img/ufpr.jpg" alt="Drawing" style="width: 200px;"/>
+</td>
+<td>
+           
+</td>
+</center>
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;">
+
+</div>
+<div id="refs" class="references">
+<div id="ref-Bonat16">
+<p>Bonat, Wagner Hugo, and Bent Jørgensen. 2016. “Multivariate Covariance Generalized Linear Models.” <em>Journal of the Royal Statistical Society: Series C (Applied Statistics)</em> 65 (5). Wiley Online Library: 649–75.</p>
+</div>
+<div id="ref-boxcox64">
+<p>Box, George EP, and David R Cox. 1964. “An Analysis of Transformations.” <em>Journal of the Royal Statistical Society. Series B (Methodological)</em>. JSTOR, 211–52.</p>
+</div>
+<div id="ref-hotelling">
+<p>Hotelling, Harold. 1951. “A Generalized T Test and Measure of Multivariate Dispersion.” UNIVERSITY OF NORTH CAROLINA Chapel Hill United States.</p>
+</div>
+<div id="ref-lawley">
+<p>Lawley, DN. 1938. “A Generalization of Fisher’s Z Test.” <em>Biometrika</em> 30 (1/2). JSTOR: 180–87.</p>
+</div>
+<div id="ref-Nelder72">
+<p>Nelder, John Ashworth, and Robert William Maclagan Wedderburn. 1972. “Generalized Linear Models.” <em>Journal of the Royal Statistical Society. Series A (General)</em> 135: 370–84.</p>
+</div>
+<div id="ref-pillai">
+<p>Pillai, KCS, and others. 1955. “Some New Test Criteria in Multivariate Analysis.” <em>The Annals of Mathematical Statistics</em> 26 (1). Institute of Mathematical Statistics: 117–21.</p>
+</div>
+<div id="ref-roy">
+<p>Roy, Samarendra Nath. 1953. “On a Heuristic Method of Test Construction and Its Use in Multivariate Analysis.” <em>The Annals of Mathematical Statistics</em>. JSTOR, 220–38.</p>
+</div>
+<div id="ref-manova">
+<p>Smith, H, R Gnanadesikan, and JB Hughes. 1962. “Multivariate Analysis of Variance (Manova).” <em>Biometrics</em> 18 (1). JSTOR: 22–41.</p>
+</div>
+<div id="ref-wilks">
+<p>Wilks, Samuel S. 1932. “Certain Generalizations in the Analysis of Variance.” <em>Biometrika</em>. JSTOR, 471–94.</p>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

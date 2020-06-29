@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>4_mc_manova_wald.utf8.md</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="0_intro.html">
+    <span class="fa fa-commenting-o"></span>
+     
+    Introdução
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Metodologia
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1_mcglm.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        McGLM
+      </a>
+    </li>
+    <li>
+      <a href="2_wald_test.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        Teste Wald
+      </a>
+    </li>
+    <li>
+      <a href="3_anova.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        ANOVA
+      </a>
+    </li>
+    <li>
+      <a href="4_mc_manova_wald.html">
+        <span class="fa fa-chevron-right"></span>
+         
+        Wald MANOVA
+      </a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="5_simula.html">
+    <span class="fa fa-code"></span>
+     
+    Estudos de simulação
+  </a>
+</li>
+<li>
+  <a href="6_aplica.html">
+    <span class="fa fa-bar-chart"></span>
+     
+    Estudos de caso
+  </a>
+</li>
+<li>
+  <a href="7_conclusao.html">
+    <span class="fa fa-file-text"></span>
+     
+    Considerações finais
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://lineu96.github.io/st/">
+    <span class="fa fa-user"></span>
+     
+    Lineu A.C.F
+  </a>
+</li>
+<li>
+  <a href="https://github.com/lineu96">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<style type="text/css">
+table.header {
+    margin-top: 10px;
+    border-collapse: unset;
+}
+table.header > tbody {
+    border-bottom: 0px;
+    border-top: 0px;
+}
+</style>
+
+<table class="header" width="100%" align="center">
+  <tr>
+    <td align="left" valign="bottom" width="90px">
+      <a href="link.com">
+        <img src="img/mcglm.png" width="100%" />
+      </a>
+    </td>
+    <td align="left" valign="center">
+      <div class="header">
+        <h4 style="font-size: 20px; margin: 10px auto 0 10px">
+          Testes de hipótese em Modelos Multivariados de Covariância Linear Generalizada (McGLM)
+        </h4>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<hr />
+<center>
+<font size="6">
+<p align=”center”>
+<b> Análise de Variância Multivariada via teste Wald </b>
+</center>
+</font>
+</center>
+<hr />
+<font size="4">
+<p align=”center”>
+<a href="https://lineu96.github.io/st/">Lineu Alberto Cavazani de Freitas</a>
+</center>
+<p></font></p>
+<hr />
+<div id="introducao" class="section level1">
+<h1>Introdução</h1>
+<p>Como já visto, através da estatística de Wald, podemos realizar testes sobre parâmetros de modelos de regressão e ainda efetuar Análises de Variância dos tipos II e III. Por meio de um procedimento similar, podemos chegar a uma extensão do teste Wald no contexto dos Modelos Multivariados de Covariância Linear Generalizada (McGLM) pois as estimativas dos parâmetros do modelo seguem distribuição Normal.</p>
+<p>Sendo assim, podemos chegar a um teste de hipóteses sobre parâmetros de uma classe de modelos que lida com múltiplas respostas não gaussianas, de diferentes naturezas em que modela-se também a correlação entre indivíduos da amostra.</p>
+<p>Do mesmo modo que é feito para um modelo univariado, podemos chegar também a uma Análise de Variância Multivariada (MANOVA) realizando sucessivos testes do tipo Wald em que estamos interessados em avaliar o efeito de determinada variável nas <span class="math inline">\(R\)</span> respostas simultaneamente. Portanto, a pergunta que a ser respondida seria: esta variável tem efeito diferente de 0 para todas as respostas?</p>
+<p>A MANOVA clássica <span class="citation">(Smith, Gnanadesikan, and Hughes 1962)</span> é um assunto com vasta discussão na literatura e possui diversas propostas com o objetivo de verificar a nulidade dos parâmetros de um modelo de regressão multivariado, como o lambda de Wilk’s <span class="citation">(Wilks 1932)</span>, traço de Hotelling-Lawley <span class="citation">(Lawley 1938; Hotelling 1951)</span>, traço de Pillai <span class="citation">(Pillai and others 1955)</span> e maior raiz de Roy <span class="citation">(Roy 1953)</span>. No entanto, considerando um cenário com múltiplas respostas não gaussianas, tal como é permitido no contexto do McGLM, são escassas as discussões na literatura a respeito de testes de hipóteses sobre os parâmetros do modelo.</p>
+<p>Neste material serão tratados os seguintes assuntos:</p>
+<ul>
+<li><p>Teste Wald para o McGLM: suposições, hipóteses, estatística de teste e distribuição da estatística de teste.</p></li>
+<li><p>Análises de Variância multivariada via teste Wald: procedimento para obtenção de um quadro de Análise de Variância Multivariada obtido por sucessivos testes do tipo Wald sobre os parâmtros de um McGLM.</p></li>
+</ul>
+<hr />
+</div>
+<div id="teste-wald-multivariado" class="section level1">
+<h1>Teste Wald multivariado</h1>
+<p>Tal como no cenário univariado, as hipóteses de interesse são:</p>
+<p><span class="math display">\[H_0: \boldsymbol{L\beta = c} \ vs \ H_1: \boldsymbol{L\beta} \neq c.\]</span></p>
+<p>Neste cenário, considerando múltiplas respostas, a matriz <span class="math inline">\(\boldsymbol{L}\)</span> é o produto Kronecker de duas matrizes: uma matriz <span class="math inline">\(\boldsymbol{G}\)</span> e uma <span class="math inline">\(\boldsymbol{F}\)</span>, ou seja, <span class="math inline">\(\boldsymbol{L}\)</span> = <span class="math inline">\(\boldsymbol{G} \otimes \boldsymbol{F}\)</span>. A matriz <span class="math inline">\(\boldsymbol{G}\)</span> tem dimensão <span class="math inline">\(R \times R\)</span> e especifica as hipóteses referentes às respostas, já a matriz <span class="math inline">\(\boldsymbol{F}\)</span> especifica as hipóteses entre variáveis e tem dimensão <span class="math inline">\(s \times p\)</span>, em que <span class="math inline">\(s\)</span> é o número de restrições lineares, ou seja, o número de parâmetros testados, e <span class="math inline">\(p\)</span> é o número total de coeficientes de regressão do modelo. Portanto, a matriz <span class="math inline">\(\boldsymbol{L}\)</span> tem dimensão (<span class="math inline">\(sR \times p\)</span>). <span class="math inline">\(\boldsymbol{\beta}\)</span> é o vetor empilhado dos parâmetros de regressão das <span class="math inline">\(R\)</span> respostas, tem dimensão <span class="math inline">\(p \times 1\)</span>. E <span class="math inline">\(\boldsymbol{c}\)</span> é um vetor de valores a serem confrontados com as estimativas originais do modelo, de dimensão <span class="math inline">\(sR \times 1\)</span>. É simples verificar a compatibilidade das matrizes.</p>
+<p>Em geral, a matriz <span class="math inline">\(\boldsymbol{G}\)</span> é uma matriz identidade de dimensão igual ao número de respostas analisadas no modelo. Enquanto que a matriz <span class="math inline">\(\boldsymbol{F}\)</span> tem o mesmo formato da matriz <span class="math inline">\(\boldsymbol{L}\)</span> do caso caso univariado. Utilizamos o produto Kronecker (<span class="math inline">\(\otimes\)</span>) destas duas matrizes (<span class="math inline">\(\boldsymbol{G}\)</span> e <span class="math inline">\(\boldsymbol{F}\)</span>) para que a hipótese descrita na matriz <span class="math inline">\(\boldsymbol{F}\)</span> seja testada simultaneamente para as <span class="math inline">\(R\)</span> respostas do modelo, ou seja, podemos testar se um parâmetro referente a uma variável presente nas múltiplas respostas é igual a um valor estipulado. Em geral, tal como no caso univariado, as hipóteses giram em torno de vetores nulos a fim de verificar se há efeito daquela variável. Contudo, no caso multivariado, verificamos se há efeito de determinada variável em todas as respostas ao mesmo tempo.</p>
+<hr />
+<div id="exemplo" class="section level2">
+<h2>Exemplo</h2>
+<p>Para fins de ilustração, considere um modelo com duas variáveis resposta e preditor dado por:</p>
+<p><span class="math display">\[g_r(\mu_r) = \beta_{r0} + \beta_{r1} x_1 + \beta_{r2} x_2\]</span></p>
+<hr />
+<div id="hipoteses-para-um-parametro" class="section level3">
+<h3>Hipóteses para um parâmetro</h3>
+<p>Podemos estar interessados em testar se um único parâmetro, comum a todas as respostas, é igual a um valor postulado, por exemplo:</p>
+<p><span class="math display">\[H_0: \beta_{r1} = 0 \ vs \ H_1: \beta_{r1} \neq 0.\]</span></p>
+<p>Ou, da mesma forma:</p>
+<p><span class="math display">\[H_0: 
+\begin{pmatrix}
+\beta_{11} \\ 
+\beta_{12}
+\end{pmatrix} 
+= 
+\begin{pmatrix}
+0 \\ 
+0
+\end{pmatrix}
+\ vs \ 
+H_1: 
+\begin{pmatrix}
+\beta_{11} \\ 
+\beta_{12}
+\end{pmatrix} 
+\neq
+\begin{pmatrix}
+0 \\ 
+0 
+\end{pmatrix}.\]</span></p>
+<p>Ou seja, estaríamos verificando se há evidência suficiente para afirmar que o parâmetro <span class="math inline">\(\beta_1\)</span> é igual a 0 em ambas as respostas.</p>
+<hr />
+<p>Esta mesma hipótese pode ser escrita na notação genérica <span class="math inline">\(\boldsymbol{L\beta} = \boldsymbol{c}\)</span>:</p>
+<p><span class="math display">\[H_0: \boldsymbol{L\beta} = \boldsymbol{c} \ vs \ H_1: \boldsymbol{L\beta} \neq \boldsymbol{c}.\]</span></p>
+<p>Sendo assim:</p>
+<ul>
+<li><p><span class="math inline">\(\boldsymbol{G}\)</span> = <span class="math inline">\(\begin{bmatrix} 1 &amp; 0 \\ 0 &amp; 1 \end{bmatrix}\)</span>, uma matriz identidade 2x2, pois temos 2 respostas.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{F}\)</span> = <span class="math inline">\(\begin{bmatrix} 0 &amp; 1 &amp; 0 \end{bmatrix}\)</span>, uma matriz 1x3, que especifica o parâmetro a ser testado. Neste caso é o <span class="math inline">\(\beta_1\)</span> de cada resposta <span class="math inline">\(R\)</span>.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{L}\)</span> = <span class="math inline">\(\boldsymbol{G} \otimes \boldsymbol{F}\)</span>, uma matriz 2x6 que especifica a hipótese a ser testada no vetor empilhado de parâmetros de regressão de ambas as respostas. Ou seja:</p></li>
+</ul>
+<p><span class="math display">\[\boldsymbol{L} = \begin{bmatrix} 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \end{bmatrix}\]</span></p>
+<ul>
+<li><p><span class="math inline">\(\boldsymbol{\beta}\)</span> = <span class="math inline">\(\begin{bmatrix} \beta_{10}\\ \beta_{11}\\ \beta_{12}\\ \beta_{20}\\ \beta_{21}\\ \beta_{22} \end{bmatrix}\)</span>, um vetor com os parâmetros de regressão das duas respostas, empilhadas. Tem dimensão 6x1.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{c}\)</span> = <span class="math inline">\(\begin{bmatrix} 0 \\ 0 \end{bmatrix}\)</span>, um vetor 2x1.</p></li>
+</ul>
+<p>Note que as dimensões são compatíveis e o resultado do produto é a mesma hipótese já enunciada:</p>
+<p><span class="math display">\[H_0: \beta_{r1} = 0 \ vs \ H_1: \beta_{r1} \neq 0.\]</span></p>
+<hr />
+</div>
+<div id="hipoteses-para-multiplos-parametros" class="section level3">
+<h3>Hipóteses para múltiplos parâmetros</h3>
+<p>Considerando o mesmo preditor, podemos estar interessados em testar mais de um parâmetro ao mesmo tempo, por exemplo:</p>
+<p><span class="math display">\[H_0: 
+\begin{pmatrix}
+\beta_{r1} \\ 
+\beta_{r2}
+\end{pmatrix} 
+= 
+\begin{pmatrix}
+0 \\ 
+0
+\end{pmatrix}
+\ vs \ 
+H_1: 
+\begin{pmatrix}
+\beta_{r1} \\ 
+\beta_{r2}
+\end{pmatrix} 
+\neq
+\begin{pmatrix}
+0 \\ 
+0
+\end{pmatrix}.\]</span></p>
+<p>Ou ainda:</p>
+<p><span class="math display">\[H_0: 
+\begin{pmatrix}
+\beta_{11} \\ 
+\beta_{12} \\
+\beta_{21} \\ 
+\beta_{22}
+\end{pmatrix} 
+= 
+\begin{pmatrix}
+0 \\ 
+0 \\
+0 \\
+0
+\end{pmatrix}
+\ vs \ 
+H_1: 
+\begin{pmatrix}
+\beta_{11} \\ 
+\beta_{12} \\
+\beta_{21} \\
+\beta_{22}
+\end{pmatrix} 
+\neq
+\begin{pmatrix}
+0 \\ 
+0 \\
+0 \\
+0
+\end{pmatrix}.\]</span></p>
+<p>Neste caso, teríamos interesse em verificar se, simultâneamente, os parâmetros <span class="math inline">\(\beta_1\)</span> e <span class="math inline">\(\beta_2\)</span> são iguais a 0 para ambas as respostas.</p>
+<hr />
+<p>Na notação genérica <span class="math inline">\(\boldsymbol{L\beta} = \boldsymbol{c}\)</span>, temos as hipóteses:</p>
+<p><span class="math display">\[H_0: \boldsymbol{L\beta} = \boldsymbol{c} \ vs \ H_1: \boldsymbol{L\beta} \neq \boldsymbol{c}.\]</span></p>
+<p>Em que:</p>
+<ul>
+<li><p><span class="math inline">\(\boldsymbol{G}\)</span> = <span class="math inline">\(\begin{bmatrix} 1 &amp; 0 \\ 0 &amp; 1 \end{bmatrix}\)</span>, uma matriz identidade 2x2, pois temos 2 respostas.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{F}\)</span> = <span class="math inline">\(\begin{bmatrix} 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{bmatrix}\)</span>, uma matriz 2x3, que especifica os parâmetros a serem testados. Neste caso: <span class="math inline">\(\beta_1\)</span> e <span class="math inline">\(\beta_2\)</span> de cada resposta <span class="math inline">\(R\)</span>.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{L}\)</span> = <span class="math inline">\(\boldsymbol{G} \otimes \boldsymbol{F}\)</span>, uma matriz 4x6 que especifica a hipótese a ser testada no vetor empilhado de parâmetros de regressão de ambas as respostas. Ou seja:</p></li>
+</ul>
+<p><span class="math display">\[\boldsymbol{L} = \begin{bmatrix} 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1\end{bmatrix}\]</span></p>
+<ul>
+<li><p><span class="math inline">\(\boldsymbol{\beta}\)</span> = <span class="math inline">\(\begin{bmatrix} \beta_{10}\\ \beta_{11}\\ \beta_{12}\\ \beta_{20}\\ \beta_{21}\\ \beta_{22} \end{bmatrix}\)</span>, um vetor com os parâmetros de regressão das duas respostas, empilhadas. Tem dimensão 6x1.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{c}\)</span> = <span class="math inline">\(\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}\)</span>, um vetor 4x1.</p></li>
+</ul>
+<p>Note que as dimensões são compatíveis e o resultado do produto é a mesma hipótese já enunciada.</p>
+<hr />
+<p>Em geral, tal como no caso univariado, ao realizar este tipo de teste há interesse em confrontar o valor dos parâmetros estimados com 0 para verificar se existe efeito das variáveis no modelo, contudo podem ser utilizados outros valores diferentes de 0.</p>
+<hr />
+</div>
+</div>
+</div>
+<div id="estatistica-de-teste" class="section level1">
+<h1>Estatística de teste</h1>
+<p>Seja <span class="math inline">\(\boldsymbol{\hat{\theta}} = (\boldsymbol{\hat{\beta}^{\top}}, \boldsymbol{\hat{\lambda}^{\top}})^{\top}\)</span> o estimador dos parâmetros de um McGLM, sabemos que:</p>
+<p><span class="math display">\[\begin{equation}
+\begin{aligned}
+\boldsymbol{\hat{\theta}} \sim N(\boldsymbol{\theta}, J_{\boldsymbol{\theta}}^{-1}),
+\end{aligned}
+\end{equation}\]</span></p>
+<p>Ou seja, temos o suficiente para generalizar o existente e conhecido teste de Wald para testar hipóteses sobre parâmetros de um McGLM, pois as estimativas dos parâmetros seguem distribuição Normal e podemos obter o erro padrão pela matriz de informação de Godambe. Para avaliar a hipótese faz-se uso da estatística de Wald dada por:</p>
+<p><span class="math display">\[
+W = \left (\boldsymbol{L\hat{\beta} - c} \right )^T\left ( \boldsymbol{LJ_{\beta}^{-1} L^T} \right )^{-1}\left (\boldsymbol{L\hat{\beta} - c} \right ),
+\]</span></p>
+<p>em que <span class="math inline">\(\boldsymbol{J_{\boldsymbol{\beta}}^{-1}}\)</span> é a parte da inversa da matriz de informação de Godambe que considera apenas os parâmetros de regressão, ou seja, é a matriz de variância e covariância dos parâmetros de regressão de um McGLM.</p>
+<p>Sob a hipótese nula, a estatística segue assintoticamente distribuição Qui-quadrado com <span class="math inline">\(sR\)</span> graus de liberdade e é possível notar que essa construção permite realizar o teste de hipóteses para todas as variáveis resposta, bem como entre combinações de variáveis e todos os possíveis contrastes entre os níveis de tratamento.</p>
+<hr />
+</div>
+<div id="analise-de-variancia-multivariada-via-teste-wald" class="section level1">
+<h1>Análise de Variância Multivariada via teste Wald</h1>
+<p>Como já visto, as Análises de Variância são sucessivos testes de hipótese que consideram a nulidade de determinados parâmetros a fim de verificar se sua ausência gera perda ao modelo ou, em outras palavras, se existe efeito da variável explicativa na variável resposta.</p>
+<p>No cenário com múltiplas respostas isto segue sendo feito através de uma sequência de testes que podem ser efetuados utilizando a estatística de Wald. Mais especificamente, é possível desenvolver Análises de Variância do tipo II e III para modelos multivariados que comportam respostas não gaussianas.</p>
+<p>Do mesmo modo que no caso univariado, basta, para cada linha do quadro de Análise de Variância, especificar uma matriz <span class="math inline">\(\boldsymbol{L}\)</span> que represente de forma adequada a hipótese a ser testada para todas as respostas.</p>
+<hr />
+<div id="exemplo-1" class="section level2">
+<h2>Exemplo</h2>
+<p>Para ilustração das hipóteses que seriam testadas via teste Wald em cada linha do quadro de Análise de Variância nos tipos II e III para um modelo multivariado, considere um modelo qualquer, com 2 variáveis resposta com preditor dado por:</p>
+<p><span class="math display">\[g_r(\mu_r) = \beta_{r0} + \beta_{r1} x_1 + \beta_{r2} x_2 + \beta_{r3} x_3 + \beta_{r4} x_1 x_2.\]</span></p>
+<p>Temos deste modo, para cada resposta: um intercepto, denotado por <span class="math inline">\(\beta_0\)</span> e quatro parâmetros de regressão denotados por <span class="math inline">\(\beta_1\)</span>, <span class="math inline">\(\beta_2\)</span> e <span class="math inline">\(\beta_3\)</span> e <span class="math inline">\(\beta_4\)</span>, em que <span class="math inline">\(\beta_4\)</span> representa o efeito da interação entre as variáveis <span class="math inline">\(x_1\)</span> e <span class="math inline">\(x_2\)</span>.</p>
+<p>Como se trata de um modelo com 2 variáveis resposta, a matriz <span class="math inline">\(\boldsymbol{G}\)</span> é uma identidade de ordem 2, ou seja:</p>
+<p><span class="math display">\[\boldsymbol{G} = \begin{bmatrix}
+1 &amp; 0 \\ 
+0 &amp;  1
+\end{bmatrix}.\]</span></p>
+<p>A matriz <span class="math inline">\(\boldsymbol{G}\)</span> é fixa, contudo a matriz <span class="math inline">\(\boldsymbol{F}\)</span> varia a cada linha do quadro de Análise de Variância pois é na matriz <span class="math inline">\({F}\)</span> que são especificados quais parâmetros serão testados; portanto variam conforme a natureza das variáveis (qualitativas ou quantitativas) e do tipo de Análise de Variância (II ou III).</p>
+<hr />
+</div>
+<div id="manova-tipo-ii" class="section level2">
+<h2>MANOVA tipo II</h2>
+<p>Sendo assim temos, para o tipo II as seguintes hipóteses seriam testadas:</p>
+<p>Na primeira linha, referente a <span class="math inline">\(x_1\)</span>, testaríamos o modelo completo contra o modelo sem todos os parâmetros que possuem <span class="math inline">\(x_1\)</span>, sejam fixos ou interações e independente da resposta, portanto:</p>
+<p><span class="math display">\[H_0: 
+\begin{pmatrix}
+\beta_{r1} \\ 
+\beta_{r4}
+\end{pmatrix} 
+= 
+\begin{pmatrix}
+0 \\ 
+0
+\end{pmatrix}
+\ vs \ 
+H_1: 
+\begin{pmatrix}
+\beta_{r1} \\ 
+\beta_{r4}
+\end{pmatrix} 
+\neq
+\begin{pmatrix}
+0 \\ 
+0
+\end{pmatrix}.\]</span></p>
+<p>O que resulta em uma matriz <span class="math inline">\(F\)</span> com a seguinte forma:</p>
+<p><span class="math display">\[F = \begin{bmatrix}
+0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\ 
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 1
+\end{bmatrix}\]</span></p>
+<p>Tal como a variável <span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span> está associado a um efeito de interação, portanto ambos efeitos (fixo e interação) são testados. A segunda linha do quadro, referente a <span class="math inline">\(x_2\)</span>, testaria as hipóteses:</p>
+<p><span class="math display">\[H_0: 
+\begin{pmatrix}
+\beta_{r2} \\ 
+\beta_{r4}
+\end{pmatrix} 
+= 
+\begin{pmatrix}
+0 \\ 
+0
+\end{pmatrix}
+\ vs \ 
+H_1: 
+\begin{pmatrix}
+\beta_{r2} \\ 
+\beta_{r4}
+\end{pmatrix} 
+\neq
+\begin{pmatrix}
+0 \\ 
+0
+\end{pmatrix}.\]</span></p>
+<p>O que resulta em uma matriz <span class="math inline">\(F\)</span> com a seguinte forma:</p>
+<p><span class="math display">\[F = \begin{bmatrix}
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\ 
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 1
+\end{bmatrix}\]</span></p>
+<p>A terceira linha do quadro testaria uma única hipótese, pois o parâmetro <span class="math inline">\(x_3\)</span> não está associado a nenhum outro efeito:</p>
+<p><span class="math display">\[H_0: \beta_{r3} = 0 \ vs \ H_1: \beta_{r3} \neq 0.\]</span></p>
+<p>O que resulta em uma matriz <span class="math inline">\(F\)</span> com a seguinte forma:</p>
+<p><span class="math display">\[F = \begin{bmatrix}
+0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\ 
+\end{bmatrix}\]</span></p>
+<p>Por fim, a última linha do quadro testaria o efeito da interação no modelo, ou seja:</p>
+<p><span class="math display">\[H_0: \beta_{r4} = 0 \ vs \ H_1: \beta_{r4} \neq 0.\]</span></p>
+<p>O que resulta em uma matriz <span class="math inline">\(F\)</span> com a seguinte forma:</p>
+<p><span class="math display">\[F = \begin{bmatrix}
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \\ 
+\end{bmatrix}\]</span></p>
+<p>A partir de cada matriz <span class="math inline">\(F\)</span> é gerada uma matriz <span class="math inline">\(L\)</span> dada pelo produto Kronecker <span class="math inline">\(G \otimes F\)</span>. Para cada matriz <span class="math inline">\(L\)</span> é obtido o valor da estatística de teste <span class="math inline">\(W\)</span> bem como um p-valor associado e o resultado final é sumarizado num quadro de Análise de Variância Multivariada que permite, de forma simples, avaliar se determinada variável tem ou não efeito a todas as resposta.</p>
+<hr />
+</div>
+<div id="manova-tipo-iii" class="section level2">
+<h2>MANOVA tipo III</h2>
+<p>Tal como no caso univariado a Análise de Variância Multivariada do tipo III não trata de forma distinta efeitos fixos de interações. Os testes em cada linha do quadro seriam:</p>
+<p>Na primeira linha, referente a <span class="math inline">\(x_1\)</span>, testaríamos o modelo completo contra o modelo sem <span class="math inline">\(x_1\)</span>.</p>
+<p><span class="math display">\[H_0: \beta_{r1} = 0 \ vs \ H_1: \beta_{r1} \neq 0.\]</span></p>
+<p>O que resulta em uma matriz <span class="math inline">\(F\)</span> com a seguinte forma:</p>
+<p><span class="math display">\[F = \begin{bmatrix}
+0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\ 
+\end{bmatrix}\]</span></p>
+<p>Na segunda linha, referente a <span class="math inline">\(x_2\)</span>, testaríamos o modelo completo contra o modelo sem <span class="math inline">\(x_2\)</span>. Tal como para <span class="math inline">\(x_1\)</span>, na análise do tipo III nada se supõe quanto ao parâmetro de interação, por mais que lá haja <span class="math inline">\(x_2\)</span>:</p>
+<p><span class="math display">\[H_0: \beta_{r2} = 0 \ vs \ H_1: \beta_{r2} \neq 0.\]</span></p>
+<p>O que resulta em uma matriz <span class="math inline">\(F\)</span> com a seguinte forma:</p>
+<p><span class="math display">\[F = \begin{bmatrix}
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\ 
+\end{bmatrix}\]</span></p>
+<p>O mesmo para a terceira linha:</p>
+<p><span class="math display">\[H_0: \beta_{r3} = 0 \ vs \ H_1: \beta_{r3} \neq 0.\]</span></p>
+<p>O que resulta em uma matriz <span class="math inline">\(F\)</span> com a seguinte forma:</p>
+<p><span class="math display">\[F = \begin{bmatrix}
+0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\ 
+\end{bmatrix}\]</span></p>
+<p>Por fim, a última linha do quadro testaria o efeito da interação no modelo, ou seja, testa o modelo completo contra o modelo sem interação:</p>
+<p><span class="math display">\[H_0: \beta_{r4} = 0 \ vs \ H_1: \beta_{r4} \neq 0.\]</span></p>
+<p>O que resulta em uma matriz <span class="math inline">\(F\)</span> com a seguinte forma:</p>
+<p><span class="math display">\[F = \begin{bmatrix}
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \\ 
+\end{bmatrix}\]</span></p>
+<p>Do mesmo modo que na análise do tipo II, é gerada uma matriz <span class="math inline">\(L\)</span> e para cada matriz <span class="math inline">\(L\)</span> é obtido o valor da estatística de teste <span class="math inline">\(W\)</span> e um p-valor associado.</p>
+<hr />
+<p>No caso de variáveis categóricas, são estimados o número de categorias menos um parâmetros. Neste caso, a matriz <span class="math inline">\(F\)</span> deve ser corretamente espeficicada para testar todos os parâmetros associados a níveis de determinada variável categórica.</p>
+<hr />
+<center>
+<table>
+<tr>
+<td>
+<img src="img/dsbd.png" alt="Drawing" style="width: 250px;"/>
+</td>
+<td>
+           
+</td>
+<td>
+<img src="img/ufpr.jpg" alt="Drawing" style="width: 200px;"/>
+</td>
+<td>
+           
+</td>
+</center>
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;">
+
+</div>
+<div id="refs" class="references">
+<div id="ref-hotelling">
+<p>Hotelling, Harold. 1951. “A Generalized T Test and Measure of Multivariate Dispersion.” UNIVERSITY OF NORTH CAROLINA Chapel Hill United States.</p>
+</div>
+<div id="ref-lawley">
+<p>Lawley, DN. 1938. “A Generalization of Fisher’s Z Test.” <em>Biometrika</em> 30 (1/2). JSTOR: 180–87.</p>
+</div>
+<div id="ref-pillai">
+<p>Pillai, KCS, and others. 1955. “Some New Test Criteria in Multivariate Analysis.” <em>The Annals of Mathematical Statistics</em> 26 (1). Institute of Mathematical Statistics: 117–21.</p>
+</div>
+<div id="ref-roy">
+<p>Roy, Samarendra Nath. 1953. “On a Heuristic Method of Test Construction and Its Use in Multivariate Analysis.” <em>The Annals of Mathematical Statistics</em>. JSTOR, 220–38.</p>
+</div>
+<div id="ref-manova">
+<p>Smith, H, R Gnanadesikan, and JB Hughes. 1962. “Multivariate Analysis of Variance (Manova).” <em>Biometrics</em> 18 (1). JSTOR: 22–41.</p>
+</div>
+<div id="ref-wilks">
+<p>Wilks, Samuel S. 1932. “Certain Generalizations in the Analysis of Variance.” <em>Biometrika</em>. JSTOR, 471–94.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
