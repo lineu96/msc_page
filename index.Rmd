@@ -22,9 +22,9 @@ Este projeto teve início em 2018 quando eu e uma colega de curso (Jhenifer Caet
 
 Materiais desenvolvidos na graduação:
 
- - Texto
+ - [Texto](https://lineu96.github.io/st/img/proj_manova/tcc.pdf)
  
- - Apresentação
+ - [Apresentação](https://lineu96.github.io/st/img/proj_manova/apresentacao.pdf)
  
 <center>
 <td> <img src="img/defesa.jpg" alt="Drawing" style="width: 500px;"/> </td>
