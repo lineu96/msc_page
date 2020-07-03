@@ -30,13 +30,20 @@ Materiais desenvolvidos na graduação:
 <td> <img src="img/defesa.jpg" alt="Drawing" style="width: 500px;"/> </td>
 </center>
 
----
-
+<center>
 `Foto da apresentação do TCC. Da esquerda para a direita:` 
 
-`Prof. Wagner Bonat (orientador), Prof. Walmes Zeviani (banca),`
-
-`Lineu Alberto, Jhenifer Veloso, Prof. Cesar Taconeli (banca).`
+  `Prof. Wagner Hugo Bonat (orientador).`
+  
+  `Prof. Walmes Marques Zeviani (banca).`
+  
+  `Lineu Alberto Cavazani de Freitas (eu).`
+  
+  `Jhenifer Veloso & Samuel (na barriga).`
+  
+  `Prof. Cesar Auguto Taconeli (banca).`
+  
+</center>
 
 ---
 
