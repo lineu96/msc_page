@@ -31,7 +31,9 @@ Materiais desenvolvidos na graduação:
 </center>
 
 <center>
-`Foto da apresentação do TCC. Da esquerda para a direita:` 
+ `Foto da apresentação do TCC`. 
+
+ `Da esquerda para a direita:` 
 
   `Prof. Wagner Hugo Bonat (orientador).`
   
