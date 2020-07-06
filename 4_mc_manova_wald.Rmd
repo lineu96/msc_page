@@ -437,6 +437,8 @@ Do mesmo modo que na análise do tipo II, é gerada uma matriz $L$ e para cada m
 
 No caso de variáveis categóricas, são estimados o número de categorias menos um parâmetros. Neste caso, a matriz $F$ deve ser corretamente espeficicada para testar todos os parâmetros associados a níveis de determinada variável categórica.
 
+Além disso, através do mesmo procedimento podemos extender os testes para comportar parâmetros de dispersão e potência de tal modo que seja possível avaliar o efeito da correlação entre os indivíduos e ainda verificar que distribuição de probabilidade conhecida se adequa bem ao problema de acordo com a função de variância utilizada.
+
 ---
 
 <center>
